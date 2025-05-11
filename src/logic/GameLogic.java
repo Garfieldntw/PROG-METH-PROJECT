@@ -3,16 +3,16 @@ package logic;
 import java.util.ArrayList;
 
 
+
 import java.util.Random;
 
 import Interface.Breakable;
 import javafx.scene.image.Image;
-import logic.Component.EachPane;
-import logic.Component.GamePane;
+import logic.Component.*;
 import logic.Player.Player;
-import object.Floor;
-import object.Obstacle;
-import weapon.NormalBomb;
+import object.*;
+import weapon.Rock;
+import weapon.Shovel;
 import weapon.Weapon;
 
 public class GameLogic {
@@ -20,16 +20,18 @@ public class GameLogic {
 	// add PaneHeight&&number of Row&Column
 	private static double PaneWidth = 50;
 	private static double PaneHeight = 50;
-	private final Image bombImage = new NormalBomb().getBombImage();
 	private static GamePane gamepane = GameController.getGamePane();
 	private ArrayList<ArrayList<EachPane>> map = gamepane.getLayoutPane().getmap();
 
 
 	public static void DropWeapon(int xPosition, int yPosition) {
-		// TODO Auto-generated method stub
-		Random rand = new Random();
-		int randomIndex = rand.nextInt(WeaponList.size());
-		
+		// 3 = Shovel, 4 = Rock.
+		//Random rand = new Random();
+		//int randomIndex = rand.nextInt(3);
+		//if(randomIndex == 3) GameController.getWeaponCanvas().Drop(new Shovel(2), xPosition, yPosition, GameController.getWeaponCanvas().getGraphicsContext2D());
+		//else if(randomIndex == 4) GameController.getWeaponCanvas().Drop(new Rock(2), randomIndex, randomIndex, GameController.getWeaponCanvas().getGraphicsContext2D());
+		GameController.getWeaponCanvas().Drop(new Shovel(2), xPosition, yPosition, GameController.getWeaponCanvas().getGraphicsContext2D());
+
 	}
 	// Return PANE from x and y pixel
 	public static EachPane getPane(double xPos, double yPos) {
@@ -172,7 +174,7 @@ public class GameLogic {
 		    GameController.getLayoutPane().getmap().get(yPos).set(xPos, newFloor);
 			GameController.getLayoutPane().add(newFloor, xPos, yPos);
 			System.out.println(GameController.getLayoutPane().GetEachPane(xPos, yPos).getObject());
-				//pane.getObject().Break();
+			((Breakable) pane.getObject()).Break();
 			}
 	}
 	
@@ -184,9 +186,5 @@ public class GameLogic {
 	public static void increaseBombPower() {
 		// TODO Auto-generated method stub
 		GameController.getWeaponCanvas().setBombpower(GameController.getWeaponCanvas().getBombpower() + 2);
-	}
-	public static void drawShovel(int xpos, int yPos, int dirLR, int dirUD) {
-		// TODO Auto-generated method stub
-		GameController.getWeaponCanvas().drawshovel(int xpos, int yPos, int dirLR, int dirUD);
 	}
 }

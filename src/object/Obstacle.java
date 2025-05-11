@@ -27,4 +27,5 @@ public class Obstacle {
 	public Image getImage() {
 		return null;
 	}
+
 }

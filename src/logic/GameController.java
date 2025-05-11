@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import object.*;
+import weapon.Weapon;
 
 public class GameController {
     private static VBox root;
@@ -39,7 +40,6 @@ public class GameController {
         scene = new Scene(root, 850, 630);
         keyboardController = new KeyboardController();
         isGameEnded = false;
-        
         // map creation
         ArrayList<Integer> xSpawnPoints = new ArrayList<>(Arrays.asList(1, 15));
         ArrayList<Integer> ySpawnPoints = new ArrayList<>(Arrays.asList(3, 4, 5));
@@ -53,8 +53,9 @@ public class GameController {
                 	row.add(new EachPane(new Floor(x,y),x,y));
                 	} else {
                 		Random random = new Random();
-                    	if (random.nextInt(100) < 70) {
-                        row.add(new EachPane(new Lettuce(x,y),x,y));
+                    	if (random.nextInt(100) < 80) {
+                            if (random.nextInt(100) < 85) row.add(new EachPane(new Lettuce(x,y),x,y));
+                            else row.add(new EachPane(new Purple_Cabbage(x,y),x,y));
                     	} else {
                     		row.add(new EachPane(new Floor(x,y),x,y));
                     	}
@@ -156,7 +157,7 @@ public class GameController {
 
 	}
 	public static void mainToGameScene(){
-        root.getchidren().clear();
-        root.getChildren().add(gamePane,statusPane);
+        root.getChildren().clear();
+        root.getChildren().addAll(gamePane,StatusPane);
     }
 }

@@ -12,10 +12,13 @@ import logic.GameLogic;
 import logic.Player.Player;
 import object.Floor;
 import object.Lettuce;
+import weapon.Shovel;
+import weapon.Weapon;
 
 public class WeaponCanvas extends Canvas {
 	private int bombpower = 1;
 	private final ArrayList<Image> bombImage;
+	private final Image RockImage = new Image(getClass().getResource("").toExternalForm());
 
 	public WeaponCanvas(double width, double height) {
 		super(width, height);
@@ -39,7 +42,7 @@ public class WeaponCanvas extends Canvas {
 				gc.setStroke(Color.GHOSTWHITE);
 				gc.setLineWidth(5);
 				// gc.fillRect(xPos+12.5-finalX/2, yPos+12.5-finalX/2, 25 + finalX, 25 +finalX);
-				gc.fillRect(xPos, yPos, 51, 51);
+				gc.fillRect(xPos, yPos, 50.5, 50.5);
 			});
 			// x += 6;
 			try {
@@ -233,7 +236,7 @@ public class WeaponCanvas extends Canvas {
 		return 0;
 	}
 
-	public void drawShovel(Player p, int xPos, int yPos, int dirLR, int dirUD, GraphicsContext gc) {
+	public void drawShovel(Player p, double xpos, double yPos, int dirLR, int dirUD, GraphicsContext gc) {
 		// TODO Auto-generated method stub
 		gc.setFill(Color.WHEAT);
         
@@ -245,10 +248,11 @@ public class WeaponCanvas extends Canvas {
 	        else if(dirUD == -1) startAngle = -135;
 	        else if(dirUD == 1) startAngle = 45;
 			double Angle = 0;
+			p.setSpeed(0);
 			while(Angle < 90) {
 				Angle += 15;
-				gc.clearRect(xPos, yPos, 120, 120);
-				gc.fillArc(xPos - 30, yPos - 30, 120, 120, startAngle, Angle, javafx.scene.shape.ArcType.ROUND);
+				gc.clearRect(xpos, yPos, 120, 120);
+				gc.fillArc(xpos - 30, yPos - 30, 120, 120, startAngle, Angle, javafx.scene.shape.ArcType.ROUND);
 				try {
 					Thread.sleep(30);
 				} catch (InterruptedException e) {
@@ -256,10 +260,96 @@ public class WeaponCanvas extends Canvas {
 					e.printStackTrace();
 				}
 			}
+			if(dirLR != 0 && GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p) + dirLR, GameLogic.getyPane(p)).getObject() instanceof Floor) {
+				GameLogic.Break(GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p) + dirLR, GameLogic.getyPane(p)));
+			}
+			else if(dirUD != 0 && GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p), GameLogic.getyPane(p)+ dirUD).getObject() instanceof Floor) {
+				GameLogic.Break(GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p), GameLogic.getyPane(p)+ dirUD));
+			}
 			while (Angle > 0) {
 				Angle -= 15;
-				gc.clearRect(xPos, yPos, 120, 120);
-				gc.fillArc(xPos - 30, yPos - 30, 120, 120, startAngle + 90 - Angle, Angle, javafx.scene.shape.ArcType.ROUND);
+				gc.clearRect(xpos, yPos, 120, 120);
+				gc.fillArc(xpos - 30, yPos - 30, 120, 120, startAngle + 90 - Angle, Angle, javafx.scene.shape.ArcType.ROUND);
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			p.setSpeed(3);
+			
+		}).start();
+        
+		
+	}
+
+	public void ThrowRock(double xPos, double yPos, int dirLR, int dirUD, GraphicsContext gc) {
+		// TODO Auto-generated method stub
+		new Thread(() -> {
+			double speed = 10.0;
+			double RockX = xPos;
+			double RockY = yPos;
+			while(!(GameLogic.getPane(RockX, RockY).getObject() instanceof Floor)) {
+				gc.clearRect(RockX, RockY, 50, 50);
+				RockX += speed * dirLR;
+				RockY += speed * dirUD;
+				gc.drawImage(RockImage, RockX, RockY, 50, 50);
+				if(GameLogic.collide(GameController.getGameCanvas().getP1().getxPosition()+22.5
+						, GameController.getGameCanvas().getP1().getyPosition()+22.5, RockX, RockY, 50, 50)) {
+					GameController.getGameCanvas().getP1().setHealth(GameController.getGameCanvas().getP1().getHealth()-1);
+					break;
+				}
+				else if(GameLogic.collide(GameController.getGameCanvas().getP2().getxPosition()+22.5
+						, GameController.getGameCanvas().getP2().getyPosition()+22.5, RockX, RockY, 50, 50)) {
+					GameController.getGameCanvas().getP2().setHealth(GameController.getGameCanvas().getP2().getHealth()-1);
+					break;
+				}
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			gc.clearRect(RockX, RockY, 50, 50);		
+		}).start();
+	}
+
+	public void Drop(Weapon weapon, int xPos, int yPos, GraphicsContext gc) {
+		// TODO Auto-generated method stub
+		new Thread(() -> {
+			boolean isPickedUp = false;
+			double speed = 2;
+			double curPos = yPos*50;
+			gc.setStroke(Color.rgb(200, 200, 210, 0.4));
+			gc.setFill(Color.rgb(173, 216, 230, 0.5));
+			gc.setLineWidth(2);
+			boolean up = true;
+			while(isPickedUp == false) {
+				gc.clearRect(xPos, curPos, 50, 50);
+				if(up == true) curPos += speed;
+				else curPos -= speed;
+				gc.setFill(Color.rgb(173, 216, 230, 0.5));
+				gc.strokeOval(xPos * 50, curPos + speed, 50, 50);
+				gc.fillOval(xPos * 50, curPos + speed, 50, 50);
+				gc.setFill(Color.rgb(255, 255, 255, 0.3));
+				gc.fillOval(xPos + 5, curPos + 5, 7.5, 7.5);
+				gc.drawImage(weapon.getImage(), xPos*50 + 7, curPos*50 + 7, 35.4, 35.4);
+				if(curPos > (yPos*50) + 15) up = false;
+				else if(curPos < (yPos*50)-15) up = true;
+				if(GameLogic.collide(GameController.getGameCanvas().getP1().getxPosition() +22.5
+						, GameController.getGameCanvas().getP1().getyPosition() +22.5, xPos * 50, yPos*50, 50, 50)) {
+					GameController.getGameCanvas().getP1().setHoldedWeapon(weapon);
+					weapon.setP(GameController.getGameCanvas().getP1());
+					isPickedUp = true;
+				}
+				else if(GameLogic.collide(GameController.getGameCanvas().getP2().getxPosition() +22.5
+						, GameController.getGameCanvas().getP2().getyPosition() +22.5, xPos * 50, yPos*50, 50, 50)) {
+					GameController.getGameCanvas().getP2().setHoldedWeapon(weapon);
+					weapon.setP(GameController.getGameCanvas().getP2());
+					isPickedUp = true;
+				}
 				try {
 					Thread.sleep(30);
 				} catch (InterruptedException e) {
@@ -268,7 +358,5 @@ public class WeaponCanvas extends Canvas {
 				}
 			}
 		}).start();
-        
-		
 	}
 }

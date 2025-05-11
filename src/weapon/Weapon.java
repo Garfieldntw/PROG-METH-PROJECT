@@ -1,5 +1,6 @@
 package weapon;
 
+import javafx.scene.image.Image;
 import logic.Player.Player;
 
 public abstract class Weapon {
@@ -9,13 +10,16 @@ public abstract class Weapon {
 		this.durability = durability;
 		this.p = p;
 	}
+	public Weapon(int durability) {
+		this.durability = durability;
+	}
 	public Player getP() {
 		return p;
 	}
 	public void setP(Player p) {
 		this.p = p;
 	}
-	public abstract void useWeapon(int Xpos, int yPos, int dirLR, int dirUD);
+	public abstract void useWeapon(double Xpos, double yPos, int dirLR, int dirUD);
 	
 	public int getDurability() {
 		return durability;
@@ -30,5 +34,5 @@ public abstract class Weapon {
 		this.p.setHoldingItem(false);
 		
 	}
-	
+	public abstract Image getImage();
 }
