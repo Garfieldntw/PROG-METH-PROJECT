@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
+import weapon.Shovel;
 import weapon.Weapon;
 
 public class Player {
@@ -37,6 +38,7 @@ public class Player {
 		PlayerImage.add(new Image(getClass().getResource("/DemoPlayerSprite.png").toExternalForm()));
 		PlayerImage.add(new Image(getClass().getResource("/DemoPlayerSprite.png").toExternalForm()));
 		placeBomb();
+		this.setHoldedWeapon(new Shovel(2, this));
 	}
 
 	

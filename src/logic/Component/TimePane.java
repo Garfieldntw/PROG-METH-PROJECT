@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import logic.GameController;
+import logic.GameLogic;
 import javafx.application.Platform;
 
 public class TimePane extends VBox {
@@ -28,6 +29,7 @@ public class TimePane extends VBox {
 		timer.setFont(new Font(20));
 
 		button = new Button("End game");
+		button.setFocusTraversable(false);
 
 		this.getChildren().add(timer);
 		this.getChildren().add(button);
@@ -56,6 +58,7 @@ public class TimePane extends VBox {
 				if (seconds <= 0) {
 					seconds = 59;
 					minutes--;
+					GameLogic.increaseBombPower();
 				}
 			}
 		});

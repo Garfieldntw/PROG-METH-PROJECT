@@ -21,7 +21,7 @@ public class GameOverPane extends VBox {
 		winnerImageView.setPreserveRatio(true);
 
 		Button exitButton = new Button("Exit Game");
-		exitButton.setOnAction(e -> System.exit(0));
+		exitButton.setOnMouseClicked(e -> System.exit(0));
 
 		setAlignment(Pos.CENTER);
 

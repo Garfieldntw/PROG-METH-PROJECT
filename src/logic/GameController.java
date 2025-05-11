@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import logic.Component.*;
+import logic.Component.MainMenu.MainMenuPane;
 import logic.Player.Player;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class GameController {
     private static WeaponCanvas weaponCanvas;
     private static ArrayList<ArrayList<EachPane>> epList = new ArrayList<>();
 	private static StatusPane StatusPane;
+	private static MainMenuPane menuPane;
 	
     public static void setupScene() {
         // set scene
@@ -68,7 +70,8 @@ public class GameController {
 		weaponCanvas = new WeaponCanvas(850,450);
         gamePane = new GamePane(layoutPane,gameCanvas,weaponCanvas);
         StatusPane = new StatusPane();
-        root.getChildren().addAll(gamePane, StatusPane);
+        menuPane = new MainMenuPane();
+        root.getChildren().addAll(menuPane);
         
     }
 
@@ -152,4 +155,8 @@ public class GameController {
 		root.getChildren().add(gameOverPane);
 
 	}
+	public static void mainToGameScene(){
+        root.getchidren().clear();
+        root.getChildren().add(gamePane,statusPane);
+    }
 }

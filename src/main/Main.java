@@ -11,6 +11,9 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) {
 		// TODO Auto-generated method stub
+		//MainMenuPane menuPane = new MainMenuPane();
+		//Scene scene = new Scene(menuPane);
+		
 		GameController.setupScene();
 		primaryStage.setTitle("game demo");
 		primaryStage.setScene(GameController.getScene());

@@ -181,4 +181,12 @@ public class GameLogic {
 		boolean inY = yPos < yStart + ySize && yPos > yStart;
 		return inX && inY;
 	}
+	public static void increaseBombPower() {
+		// TODO Auto-generated method stub
+		GameController.getWeaponCanvas().setBombpower(GameController.getWeaponCanvas().getBombpower() + 2);
+	}
+	public static void drawShovel(int xpos, int yPos, int dirLR, int dirUD) {
+		// TODO Auto-generated method stub
+		GameController.getWeaponCanvas().drawshovel(int xpos, int yPos, int dirLR, int dirUD);
+	}
 }

@@ -39,7 +39,7 @@ public class WeaponCanvas extends Canvas {
 				gc.setStroke(Color.GHOSTWHITE);
 				gc.setLineWidth(5);
 				// gc.fillRect(xPos+12.5-finalX/2, yPos+12.5-finalX/2, 25 + finalX, 25 +finalX);
-				gc.fillRect(xPos+1, yPos+1, 50, 50);
+				gc.fillRect(xPos, yPos, 51, 51);
 			});
 			// x += 6;
 			try {
@@ -126,7 +126,7 @@ public class WeaponCanvas extends Canvas {
 					GameController.getGameCanvas().getP2()
 							.setHealth(GameController.getGameCanvas().getP2().getHealth() - 1);
 
-				realsize += 12.5;
+				realsize += 25;
 				try {
 					Thread.sleep(30);
 				} catch (InterruptedException e) {
@@ -134,7 +134,7 @@ public class WeaponCanvas extends Canvas {
 				}
 
 			}
-			Platform.runLater(() -> endExplosion(gc, size, xPos, yPos));
+			Platform.runLater(() -> endExplosion(gc, size, xPos, yPos, next));
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
@@ -145,16 +145,16 @@ public class WeaponCanvas extends Canvas {
 		}).start();
 	}
 
-	private void endExplosion(GraphicsContext gc, ArrayList<Double> size, double xPos, double yPos) {
+	private void endExplosion(GraphicsContext gc, ArrayList<Double> size, double xPos, double yPos, ArrayList<Boolean> next) {
 		// TODO Auto-generated method stub
 		gc.setFill(Color.YELLOW);
 		// to left
-		gc.fillOval(xPos - size.get(0) - 25, yPos, 50, 50);
+		if(next.get(0)) gc.fillOval(xPos - size.get(0) - 25, yPos, 50, 50);
 		// to right
-		gc.fillOval(xPos + 25 + size.get(1), yPos, 50, 50);
+		if(next.get(1)) gc.fillOval(xPos + 25 + size.get(1), yPos, 50, 50);
 		// to top
-		gc.fillOval(xPos, yPos - size.get(2) - 25, 50, 50);
-		gc.fillOval(xPos, yPos + 25 + size.get(3), 50, 50);
+		if(next.get(2)) gc.fillOval(xPos, yPos - size.get(2) - 25, 50, 50);
+		if(next.get(3)) gc.fillOval(xPos, yPos + 25 + size.get(3), 50, 50);
 	}
 
 	private void Clearrect(GraphicsContext gc, ArrayList<Double> size, double xPos, double yPos) {
@@ -231,5 +231,44 @@ public class WeaponCanvas extends Canvas {
 	public int getBombpower() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void drawShovel(Player p, int xPos, int yPos, int dirLR, int dirUD, GraphicsContext gc) {
+		// TODO Auto-generated method stub
+		gc.setFill(Color.WHEAT);
+        
+		new Thread(() -> {
+			int startAngle = -45;
+	        if(p.equals(GameController.getGameCanvas().getP2())) startAngle = 135;
+	        if(dirLR == -1) startAngle = 135;
+	        else if(dirLR == 1) startAngle = -45;
+	        else if(dirUD == -1) startAngle = -135;
+	        else if(dirUD == 1) startAngle = 45;
+			double Angle = 0;
+			while(Angle < 90) {
+				Angle += 15;
+				gc.clearRect(xPos, yPos, 120, 120);
+				gc.fillArc(xPos - 30, yPos - 30, 120, 120, startAngle, Angle, javafx.scene.shape.ArcType.ROUND);
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			while (Angle > 0) {
+				Angle -= 15;
+				gc.clearRect(xPos, yPos, 120, 120);
+				gc.fillArc(xPos - 30, yPos - 30, 120, 120, startAngle + 90 - Angle, Angle, javafx.scene.shape.ArcType.ROUND);
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}).start();
+        
+		
 	}
 }

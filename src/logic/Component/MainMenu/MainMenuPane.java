@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import logic.GameController;
 
 public class MainMenuPane extends VBox{
 
@@ -14,6 +15,11 @@ public class MainMenuPane extends VBox{
 		Image gameLogo = new Image(getClass().getResource("/icons/music.png").toExternalForm());
 		ImageView gameLogoView = new ImageView(gameLogo);
 		Button start = new Button("Start game");
+		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				Platform.runLater(() -> GameController.mainToGameScene());
+			}
+		});
 		
 		Button howToPlay = new Button("How to play");
 		
