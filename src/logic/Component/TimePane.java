@@ -37,7 +37,7 @@ public class TimePane extends VBox {
 	
 		button.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				GameController.setGameEnded(true);
+				Platform.runLater(() -> GameController.setGameEnded(true));
 			}
 		});
 		this.setFocusTraversable(false);
@@ -55,7 +55,7 @@ public class TimePane extends VBox {
 				Platform.runLater(() -> timer.setText(String.format("%01d:%02d", minutes, seconds)));
 				
 				seconds -= 1;
-				if (seconds <= 0) {
+				if (seconds < 0) {
 					seconds = 59;
 					minutes--;
 					GameLogic.increaseBombPower();

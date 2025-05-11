@@ -3,6 +3,7 @@ package logic.Player;
 
 import java.util.ArrayList;
 import logic.GameController;
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -22,6 +23,7 @@ public class Player {
 	private Weapon holdedWeapon;
 	private final double width = 45;
 	private final double height = 45;
+	private boolean isInvincible = false;
 	// add final ArrayList<E> when finished
 	private ArrayList<Image> PlayerImage;
 
@@ -34,9 +36,10 @@ public class Player {
 		
 		// walk animation (to be fixed)
 		PlayerImage = new ArrayList<>();
-		PlayerImage.add(new Image(getClass().getResource("/DemoPlayerSprite.png").toExternalForm()));
-		PlayerImage.add(new Image(getClass().getResource("/DemoPlayerSprite.png").toExternalForm()));
-		PlayerImage.add(new Image(getClass().getResource("/DemoPlayerSprite.png").toExternalForm()));
+		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteFront.png").toExternalForm()));
+		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteBack.png").toExternalForm()));
+		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteLeft.png").toExternalForm()));
+		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteRight.png").toExternalForm()));
 		placeBomb();
 		this.setHoldedWeapon(new Shovel(2, this));
 	}
@@ -83,17 +86,10 @@ public class Player {
 		return xPosition;
 	}
 
-	public void setxPosition(int xPosition) {
-		this.xPosition = xPosition;
-	}
-
 	public double getyPosition() {
 		return yPosition;
 	}
 
-	public void setyPosition(int yPosition) {
-		this.yPosition = yPosition;
-	}
 
 	public int getSpeed() {
 		return speed;
@@ -131,7 +127,7 @@ public class Player {
 	public void setDead(boolean isDead) {
 		this.isDead = isDead;
 		if (isDead){
-			GameController.setGameEnded(true);
+			Platform.runLater(() -> GameController.setGameEnded(true,this));
 		}
 	}
 
@@ -174,7 +170,45 @@ public class Player {
 	public void render(GraphicsContext gc, int index) {
 		// TODO Auto-generated method stub
 		gc.drawImage(PlayerImage.get(index), getxPosition(), getyPosition(), width, height);
-		gc.setFill(Color.RED);
-		gc.fillOval(getxPosition(), getyPosition(), 5, 5);
+
 	}
+	public void getHurt() {
+		new Thread(() -> {
+			if(!isInvincible) {
+			this.setHealth(health - 1);
+			this.setInvincible(true);
+			if(name == "Player 1") GameController.getStatusPane().getP1Status().updateHealth();
+			else GameController.getStatusPane().getP2Status().updateHealth();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.setInvincible(false);
+			}
+		}).start();
+		
+	}
+
+
+	public boolean isInvincible() {
+		return isInvincible;
+	}
+
+
+	public void setInvincible(boolean isInvincible) {
+		this.isInvincible = isInvincible;
+	}
+
+
+	public void setxPosition(double xPosition) {
+		this.xPosition = xPosition;
+	}
+
+
+	public void setyPosition(double yPosition) {
+		this.yPosition = yPosition;
+	}
+	
 }

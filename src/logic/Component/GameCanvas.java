@@ -15,7 +15,7 @@ public class GameCanvas extends Canvas {
 	public GameCanvas(double width, double height) {
 		super(width, height);
 		// Add player health, spawnpoint
-		this.p1 = new Player("Player 1", (50 * 1) + 1, (50 * 4) + 1, 1);
+		this.p1 = new Player("Player 1", (50 * 1) + 1, (50 * 4) + 1, 10);
 		this.p2 = new Player("Player 2", (50 * 15) + 1, (50 * 4) + 1, 1);
 		setupMove();
 

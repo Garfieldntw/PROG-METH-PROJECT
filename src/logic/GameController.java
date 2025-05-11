@@ -35,7 +35,7 @@ public class GameController {
         root = new VBox();
         root.setFocusTraversable(true);
         root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(20));
+        root.setPadding(Insets.EMPTY);
         // ตั้งขนาดพื้นที่จอ
         scene = new Scene(root, 850, 630);
         keyboardController = new KeyboardController();
@@ -72,6 +72,7 @@ public class GameController {
         gamePane = new GamePane(layoutPane,gameCanvas,weaponCanvas);
         StatusPane = new StatusPane();
         menuPane = new MainMenuPane();
+        
         root.getChildren().addAll(menuPane);
         
     }
@@ -137,6 +138,36 @@ public class GameController {
 		GameController.scene = scene;
 	}
 	
+	
+	public static ArrayList<ArrayList<EachPane>> getEpList() {
+		return epList;
+	}
+
+
+	public static void setEpList(ArrayList<ArrayList<EachPane>> epList) {
+		GameController.epList = epList;
+	}
+
+
+	public static StatusPane getStatusPane() {
+		return StatusPane;
+	}
+
+
+	public static void setStatusPane(StatusPane statusPane) {
+		StatusPane = statusPane;
+	}
+
+
+	public static MainMenuPane getMenuPane() {
+		return menuPane;
+	}
+
+
+	public static void setMenuPane(MainMenuPane menuPane) {
+		GameController.menuPane = menuPane;
+	}
+
 
 	public static void setKeyboardController(KeyboardController keyboardController) {
 		GameController.keyboardController = keyboardController;
@@ -144,14 +175,16 @@ public class GameController {
 
 	public static void setGameEnded(boolean isGameEnded, Player player) {
 		GameController.isGameEnded = isGameEnded;
-		GameOverPane gameOverPane = new GameOverPane(player.getName() + " Wins!",player.getPlayerImage().get(0));
+		Player winner = gameCanvas.getP1();
+		if(player.getName() == "Player 1") winner = gameCanvas.getP2();
+		GameOverPane gameOverPane = new GameOverPane(winner.getName() + " Wins!",winner.getPlayerImage().get(0));
 		root.getChildren().clear();
 		root.getChildren().add(gameOverPane);
 	}
 	
     public static void setGameEnded(boolean isGameEnded) {
 		GameController.isGameEnded = isGameEnded;
-		GameOverPane gameOverPane = new GameOverPane("Draw!", new Image(GameController.class.getResource("/carrot.png").toExternalForm()));
+		GameOverPane gameOverPane = new GameOverPane("Draw!", new Image(GameController.class.getResource("/drawImage.png").toExternalForm()));
 		root.getChildren().clear();
 		root.getChildren().add(gameOverPane);
 

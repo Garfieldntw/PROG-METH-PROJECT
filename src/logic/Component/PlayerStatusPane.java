@@ -2,6 +2,7 @@ package logic.Component;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,6 +17,7 @@ public class PlayerStatusPane extends HBox{
 	private Image PlayerImage;
 	private final Image HealthImage = new Image(getClass().getResource("/heartImage.png").toExternalForm());
 	private final Image bombImage = new Image(getClass().getResource("/bombImage1.png").toExternalForm());
+	private Text playerHealth;
 	
 
 	private Image weaponImage = new Image(getClass().getResource("/bulletImage.png").toExternalForm());
@@ -50,7 +52,7 @@ public class PlayerStatusPane extends HBox{
 		
 		Text playerName = new Text(p.getName());
 		// set playername size or highlight
-		Text playerHealth = new Text(String.valueOf(p.getHealth()));
+		playerHealth = new Text(String.valueOf(p.getHealth()));
 		HBox HealthBox = new HBox();
 		// add size
 		ImageView healthimageview = new ImageView(HealthImage);
@@ -87,4 +89,9 @@ public class PlayerStatusPane extends HBox{
 	public void setWeaponImage(Image weaponImage) {
 		this.weaponImage = weaponImage;
 	}
+	public void updateHealth() {
+		Platform.runLater(() -> playerHealth.setText(String.valueOf(p.getHealth())));
+
+	}
 }
+
