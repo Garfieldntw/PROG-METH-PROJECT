@@ -32,7 +32,6 @@ public abstract class Weapon {
 	}
 	protected void broke() {
 		this.p.setHoldingItem(false);
-		
 	}
 	public abstract Image getImage();
 }

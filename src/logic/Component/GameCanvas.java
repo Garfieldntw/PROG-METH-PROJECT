@@ -103,11 +103,19 @@ public class GameCanvas extends Canvas {
 
 				if (keyboard.isP2RightPressed() && !GameLogic.HasRightObject(p2))
 					dirLR2 = 1;
+				final int Hdir1 = dirLR1;
+				final int Vdir1 = dirUD1;
+				final int Hdir2 = dirLR2;
+				final int Vdir2 = dirUD2;
+				System.out.println(String.valueOf(keyboard.isP1weaponPressed()));
+				
 				if (keyboard.isP1weaponPressed()) {
-					p1.getHoldedWeapon().useWeapon(p1.getxPosition(), p1.getyPosition(), dirLR1, dirUD1);
+					if(p1.isHoldingItem()) Platform.runLater(() -> p1.getHoldedWeapon().useWeapon(p1.getxPosition(), p1.getyPosition(), Hdir1, Vdir1));
+					else System.out.println("Player 1 don't have an Item");
 				}
-				if (keyboard.isP1weaponPressed()) {
-					p2.getHoldedWeapon().useWeapon(p2.getxPosition(), p2.getyPosition(), dirLR2, dirUD2);
+				if (keyboard.isP2weaponPressed()) {
+					if(p2.isHoldingItem()) Platform.runLater(() -> p2.getHoldedWeapon().useWeapon(p2.getxPosition(), p2.getyPosition(),Hdir2, Vdir2));
+					else System.out.println("Player 2 don't have an Item");
 				}
 				p1.move(dirLR1, dirUD1);
 				p2.move(dirLR2, dirUD2);

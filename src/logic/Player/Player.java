@@ -146,6 +146,7 @@ public class Player {
 
 	public void setHoldedWeapon(Weapon holdedWeapon) {
 		this.holdedWeapon = holdedWeapon;
+		this.setHoldingItem(true);
 	}
 
 	public double getWidth() {

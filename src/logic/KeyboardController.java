@@ -51,7 +51,7 @@ public class KeyboardController {
 				if (e.getCode() == KeyCode.ENTER)
 					setP2BombPressed(true);
 				if (e.getCode() == KeyCode.DIGIT1)
-					setP2BombPressed(true);
+					setP2weaponPressed(true);
 			}
 		});
 		GameController.getScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -68,7 +68,7 @@ public class KeyboardController {
 					if (e.getCode() == KeyCode.SPACE)
 						setP1BombPressed(false);
 					if (e.getCode() == KeyCode.SHIFT)
-						setP1BombPressed(false);
+						setP1weaponPressed(false);
 
 					if (e.getCode() == KeyCode.UP)
 						setP2UpPressed(false);
@@ -81,7 +81,7 @@ public class KeyboardController {
 					if (e.getCode() == KeyCode.ENTER)
 						setP2BombPressed(false);
 					if (e.getCode() == KeyCode.DIGIT1)
-						setP2BombPressed(false);
+						setP2weaponPressed(false);
 				
 			}
 		});

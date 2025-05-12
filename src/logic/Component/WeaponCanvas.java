@@ -7,6 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import logic.GameController;
 import logic.GameLogic;
 import logic.Player.Player;
@@ -229,62 +230,82 @@ public class WeaponCanvas extends Canvas {
 	}
 
 	public void drawShovel(Player p, double xpos, double yPos, int dirLR, int dirUD, GraphicsContext gc) {
-		// TODO Auto-generated method stub
-		gc.setFill(Color.WHEAT);
+	    new Thread(() -> {
+	        int angleInit = -45;
+	        if (p.equals(GameController.getGameCanvas().getP2()))
+	            angleInit = 135;
+	        if (dirLR == -1)
+	            angleInit = 135;
+	        else if (dirLR == 1)
+	            angleInit = -45;
+	        else if (dirUD == 1)
+	            angleInit = -135;
+	        else if (dirUD == -1)
+	            angleInit = 45;
 
-		new Thread(() -> {
-			int startAngle = -45;
-			if (p.equals(GameController.getGameCanvas().getP2()))
-				startAngle = 135;
-			if (dirLR == -1)
-				startAngle = 135;
-			else if (dirLR == 1)
-				startAngle = -45;
-			else if (dirUD == -1)
-				startAngle = -135;
-			else if (dirUD == 1)
-				startAngle = 45;
-			double Angle = 0;
-			p.setSpeed(0);
-			gc.setFill(Color.WHITE);
-			while (Angle < 90) {
-				Angle += 15;
-				
-				gc.clearRect(xpos, yPos, 120, 120);
-				gc.fillArc(xpos - 30, yPos - 30, 120, 120, startAngle, Angle, javafx.scene.shape.ArcType.ROUND);
-				try {
-					Thread.sleep(30);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if (dirLR != 0 && GameController.getLayoutPane()
-					.GetEachPane(GameLogic.getxPane(p) + dirLR, GameLogic.getyPane(p)).getObject() instanceof Floor) {
-				Platform.runLater(() -> GameLogic.Break(GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p) + dirLR,
-						GameLogic.getyPane(p))));
-			} else if (dirUD != 0 && GameController.getLayoutPane()
-					.GetEachPane(GameLogic.getxPane(p), GameLogic.getyPane(p) + dirUD).getObject() instanceof Floor) {
-				Platform.runLater(() -> GameLogic.Break(GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p),
-						GameLogic.getyPane(p) + dirUD)));
-			}
-			while (Angle > 0) {
-				Angle -= 15;
-				gc.clearRect(xpos, yPos, 120, 120);
-				gc.fillArc(xpos - 30, yPos - 30, 120, 120, startAngle + 90 - Angle, Angle,
-						javafx.scene.shape.ArcType.ROUND);
-				try {
-					Thread.sleep(30);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			p.setSpeed(3);
+	        final int startAngle = angleInit;  
 
-		}).start();
+	        Platform.runLater(() -> p.setSpeed(0));
 
+	        double angle = 0;
+	        int steps = 6;
+	        int sleepTime = 25;
+
+	        // First step
+	        for (int i = 0; i < steps; i++) {
+	            angle = (i + 1) * 15;
+	            double finalAngle = angle;
+	            Platform.runLater(() -> {
+	                gc.clearRect(xpos - 50 , yPos - 50, 150, 150);
+	                gc.setFill(Color.rgb(255, 255, 255, 0.9));
+	                gc.fillArc(xpos - 30, yPos - 30, 120, 120, startAngle, finalAngle, ArcType.ROUND);
+	            });
+	            try {
+	                Thread.sleep(sleepTime);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+
+	        // break object
+	        if (dirLR != 0) {
+	        	EachPane pane = GameController.getLayoutPane().GetEachPane(
+	                GameLogic.getxPane(p) + dirLR, GameLogic.getyPane(p));
+	            if (!(pane.getObject() instanceof Floor)) {
+	                Platform.runLater(() -> GameLogic.Break(pane));
+	            }
+	        } else if (dirUD != 0) {
+	            EachPane pane = GameController.getLayoutPane().GetEachPane(
+	                GameLogic.getxPane(p), GameLogic.getyPane(p) + dirUD);
+	            if (!(pane.getObject() instanceof Floor)) {
+	                Platform.runLater(() -> GameLogic.Break(pane));
+	            }
+	        }
+
+	        // Second step
+	        for (int i = steps - 1; i >= 0; i--) {
+	            angle = i * 15;
+	            double finalAngle = angle;
+	            Platform.runLater(() -> {
+	                gc.clearRect(xpos-50 , yPos - 50 , 150, 150);
+	                gc.setFill(Color.rgb(255, 255, 255, 0.7));
+	                gc.fillArc(xpos - 30, yPos - 30, 120, 120, startAngle + 90 - finalAngle, finalAngle, ArcType.ROUND);
+	            });
+	            try {
+	                Thread.sleep(sleepTime);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+
+	        Platform.runLater(() -> {
+	            gc.clearRect(xpos, yPos, 120, 120);
+	            p.setSpeed(3);
+	        });
+
+	    }).start();
 	}
+
 
 	public void ThrowRock(double xPos, double yPos, int dirLR, int dirUD, GraphicsContext gc) {
 		// TODO Auto-generated method stub
@@ -330,7 +351,7 @@ public class WeaponCanvas extends Canvas {
 			gc.setLineWidth(2);
 			boolean up = true;
 			while (isPickedUp == false) {
-				gc.clearRect(xPos*50, curPos, 50, 50);
+				gc.clearRect(xPos*50 -5, curPos -5 , 60, 60);
 				if (up == true)
 					curPos += speed;
 				else
