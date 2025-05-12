@@ -1,4 +1,4 @@
-package logic.Component;
+package logic.Component.GameScenes.BottomBar;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;

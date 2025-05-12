@@ -2,11 +2,11 @@ package object;
 
 import javafx.scene.image.Image;
 
-public class Obstacle {
+public class BlockObject {
 	private int xPosition;
 	private int yPosition;
 	
-	public Obstacle(int xPosition, int yPosition) {
+	public BlockObject(int xPosition, int yPosition) {
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
 	}

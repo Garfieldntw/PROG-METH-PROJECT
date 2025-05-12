@@ -4,7 +4,7 @@ import Interface.Breakable;
 import javafx.scene.image.Image;
 import logic.GameLogic;
 
-public class Purple_Cabbage extends Obstacle implements Breakable{
+public class Purple_Cabbage extends BlockObject implements Breakable{
 
 	private final Image purpleCabbageImage = new Image(getClass().getResource("/purplecabbage.png").toExternalForm());
 

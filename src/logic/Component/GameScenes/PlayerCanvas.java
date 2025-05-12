@@ -1,4 +1,4 @@
-package logic.Component;
+package logic.Component.GameScenes;
 
 import logic.GameController;
 import logic.GameLogic;
@@ -8,11 +8,11 @@ import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-public class GameCanvas extends Canvas {
+public class PlayerCanvas extends Canvas {
 	private Player p1;
 	private Player p2;
 
-	public GameCanvas(double width, double height) {
+	public PlayerCanvas(double width, double height) {
 		super(width, height);
 		// Add player health, spawnpoint
 		this.p1 = new Player("Player 1", (50 * 1) + 1, (50 * 4) + 1, 10);
@@ -54,8 +54,8 @@ public class GameCanvas extends Canvas {
 	private void debug() {
 		new Thread(() -> {
 			while (!GameController.isGameEnded()) {
-				System.out.println(GameLogic.xPane(p1));
-				System.out.println(GameLogic.yPane(p1));
+				System.out.println(GameLogic.getxPaneNumOfPlayerTR(p1));
+				System.out.println(GameLogic.getyPaneNumOfPlayerTR(p1));
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
@@ -72,56 +72,63 @@ public class GameCanvas extends Canvas {
 
 		new Thread(() -> {
 			KeyboardController keyboard = GameController.getKeyboardController();
-
+			int realdirUD1 = 0; int realdirLR1 = 1;
+			int realdirUD2 = 0; int realdirLR2 = -1;
 			while (!GameController.isGameEnded()) {
 				int dirUD1 = 0, dirLR1 = 0;
 				int dirUD2 = 0, dirLR2 = 0;
-				if (keyboard.isP1UpPressed() && !GameLogic.HasTopObject(p1)) {
-					dirUD1 = -1;
+				if (keyboard.isP1UpPressed()) {
+					realdirUD1 = -1; realdirLR1 =0;
+					if(!GameLogic.HasTopObject(p1))dirUD1 = -1;
 				}
 
-				if (keyboard.isP1DownPressed() && !GameLogic.HasBottomObject(p1)) {
-					dirUD1 = 1;
+				if (keyboard.isP1DownPressed() ) {
+					realdirUD1 = 1; realdirLR1 =0;
+					if(!GameLogic.HasBottomObject(p1)) dirUD1 = 1; 
 				}
 
-				if (keyboard.isP1LeftPressed() && !GameLogic.HasLeftObject(p1)) {
-					dirLR1 = -1;
+				if (keyboard.isP1LeftPressed()) {
+					realdirUD1 = 0; realdirLR1 = -1;
+					if(!GameLogic.HasLeftObject(p1)) dirLR1 = -1;
 				}
 
-				if (keyboard.isP1RightPressed() && !GameLogic.HasRightObject(p1)) {
-					dirLR1 = 1;
+				if (keyboard.isP1RightPressed()) {
+					realdirUD1 = 0; realdirLR1 = 1;
+					if(!GameLogic.HasRightObject(p1))dirLR1 = 1;
 				}
 
-				if (keyboard.isP2UpPressed() && !GameLogic.HasTopObject(p2)) {
-					dirUD2 = -1;
+				if (keyboard.isP2UpPressed()) {
+					realdirUD2 = -1; realdirLR2 = 0;
+					if(!GameLogic.HasTopObject(p2)) dirUD2 = -1;
 				}
-				if (keyboard.isP2DownPressed() && !GameLogic.HasBottomObject(p2))
-					dirUD2 = 1;
-
-				if (keyboard.isP2LeftPressed() && !GameLogic.HasLeftObject(p2))
-					dirLR2 = -1;
-
-				if (keyboard.isP2RightPressed() && !GameLogic.HasRightObject(p2))
-					dirLR2 = 1;
-				final int Hdir1 = dirLR1;
-				final int Vdir1 = dirUD1;
-				final int Hdir2 = dirLR2;
-				final int Vdir2 = dirUD2;
-				System.out.println(String.valueOf(keyboard.isP1weaponPressed()));
+				if (keyboard.isP2DownPressed()) {
+					realdirUD2 = 1; realdirLR2 =0;
+					if(!GameLogic.HasBottomObject(p2)) dirUD2 = 1;
+				}
+				if (keyboard.isP2LeftPressed()) {
+					realdirUD2 = 0; realdirLR2 =-1;
+					if(!GameLogic.HasLeftObject(p2)) dirLR2 = -1;
+				}
+				if (keyboard.isP2RightPressed()) {
+					realdirUD2 = 0; realdirLR2 =1;
+					if(!GameLogic.HasRightObject(p2)) dirLR2 = 1;
+				}
+				final int Hdir1 = realdirLR1;
+				final int Vdir1 = realdirUD1;
+				final int Hdir2 = realdirLR2;
+				final int Vdir2 = realdirUD2;
 				
 				if (keyboard.isP1weaponPressed()) {
-					if(p1.isHoldingItem()) Platform.runLater(() -> p1.getHoldedWeapon().useWeapon(p1.getxPosition(), p1.getyPosition(), Hdir1, Vdir1));
-					else System.out.println("Player 1 don't have an Item");
+					p1.getHoldedWeapon().useWeapon(p1.getxPosition(), p1.getyPosition(),Hdir1, Vdir1);
 				}
 				if (keyboard.isP2weaponPressed()) {
-					if(p2.isHoldingItem()) Platform.runLater(() -> p2.getHoldedWeapon().useWeapon(p2.getxPosition(), p2.getyPosition(),Hdir2, Vdir2));
-					else System.out.println("Player 2 don't have an Item");
+					p2.getHoldedWeapon().useWeapon(p2.getxPosition(), p2.getyPosition(),Hdir2, Vdir2);
 				}
 				p1.move(dirLR1, dirUD1);
 				p2.move(dirLR2, dirUD2);
 
 				try {
-					Thread.sleep(30); // adjust as needed (e.g., 60–150ms for smooth movement)
+					Thread.sleep(30); // ??????????????
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

@@ -31,7 +31,7 @@ public abstract class Weapon {
 		else this.durability = durability;
 	}
 	protected void broke() {
-		this.p.setHoldingItem(false);
+		p.setHoldedWeapon(new NoWeapon(1, p));;
 	}
 	public abstract Image getImage();
 }

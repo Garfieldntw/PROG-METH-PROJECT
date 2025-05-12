@@ -1,4 +1,4 @@
-package logic.Component;
+package logic.Component.GameScenes.BottomBar;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public class PlayerStatusPane extends HBox{
 	public PlayerStatusPane(Player p) {
 		this.p = p;
 		this.setPrefWidth(270);
-		this.setPrefHeight(150);
+		this.setPrefHeight(120);
 		// Create a border stroke
 		BorderStroke borderStroke = new BorderStroke(
 		    Color.BLACK,                // Border color
@@ -66,16 +66,12 @@ public class PlayerStatusPane extends HBox{
 		HBox bombpowerbox = new HBox();
 		// add size
 		bombpowerbox.getChildren().addAll(bombimageview, bombPower);
-		Text WeaponHolded = new Text("");
-		ImageView weaponImageview = new ImageView(weaponImage);
+		Text WeaponHolded = new Text(p.getHoldedWeapon().toString());
+		ImageView weaponImageview = new ImageView(p.getHoldedWeapon().getImage());
 		weaponImageview.setFitHeight(10);
 		weaponImageview.setFitWidth(10);
-		if(p.isHoldingItem()) {
-			weaponImageview.setImage(p.getHoldedWeapon().getImage());
-			WeaponHolded.setText(p.getHoldedWeapon().toString());
-		}
 		HBox weaponinfobox = new HBox();
-		weaponinfobox.getChildren().addAll(weaponImageview);
+		weaponinfobox.getChildren().addAll(weaponImageview, WeaponHolded);
 		
 		status.getChildren().addAll(playerName, HealthBox, bombpowerbox, weaponinfobox);
 		this.getChildren().addAll(imagepane, status);

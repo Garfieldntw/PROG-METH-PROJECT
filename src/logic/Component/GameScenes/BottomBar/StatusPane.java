@@ -1,4 +1,4 @@
-package logic.Component;
+package logic.Component.GameScenes.BottomBar;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,9 +9,9 @@ public class StatusPane extends HBox{
 	private PlayerStatusPane p1Status;
 	private PlayerStatusPane p2Status;
 	public StatusPane() {
-		p1Status = new PlayerStatusPane(GameController.getGameCanvas().getP1());
+		p1Status = new PlayerStatusPane(GameController.getPlayerCanvas().getP1());
 		TimePane timepane = new TimePane();
-		p2Status = new PlayerStatusPane(GameController.getGameCanvas().getP2());
+		p2Status = new PlayerStatusPane(GameController.getPlayerCanvas().getP2());
 		this.setAlignment(Pos.CENTER);
 		this.setPrefSize(850, 180);
 		this.setPadding(new Insets(20,0,0,0));

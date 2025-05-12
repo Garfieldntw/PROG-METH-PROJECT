@@ -4,7 +4,7 @@ import Interface.*;
 import javafx.scene.image.Image;
 import logic.GameLogic;
 
-public class Lettuce extends Obstacle implements Breakable {
+public class Lettuce extends BlockObject implements Breakable {
 	// Source ภาพ
 
 	private final Image LettuceImage = new Image(getClass().getResource("/CabbageImage.png").toExternalForm());

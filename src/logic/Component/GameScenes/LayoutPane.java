@@ -1,4 +1,4 @@
-package logic.Component;
+package logic.Component.GameScenes;
 
 import java.util.ArrayList;
 

@@ -25,12 +25,6 @@ public class Shovel extends Weapon{
 	}
 
 	@Override
-	protected void broke() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public Image getImage() {
 		// TODO Auto-generated method stub
 		return ShovelImage;

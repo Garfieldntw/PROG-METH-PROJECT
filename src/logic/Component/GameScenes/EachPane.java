@@ -1,4 +1,4 @@
-package logic.Component;
+package logic.Component.GameScenes;
 
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
@@ -11,11 +11,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
 import object.Floor;
-import object.Obstacle;
+import object.BlockObject;
 import weapon.Weapon;
 
 public class EachPane extends Pane{
-	private Obstacle Object;
+	private BlockObject Object;
 	private int xPosition;
 	private int yPosition;
 	private Color basecolor = Color.web("#488f3d");
@@ -27,7 +27,7 @@ public class EachPane extends Pane{
 	private final int PANE_HEIGHT = 50;
 	
 	
-	public EachPane(Obstacle Object, int xPosition, int yPosition) {
+	public EachPane(BlockObject Object, int xPosition, int yPosition) {
 		this.setObject(Object);
 		this.setxPosition(xPosition);
 		this.setyPosition(yPosition);
@@ -60,10 +60,10 @@ public class EachPane extends Pane{
 		this.setBackground(new Background(bgFill));
 	}
 
-	public Obstacle getObject() {
+	public BlockObject getObject() {
 		return Object;
 	}
-	public void setObject(Obstacle object) {
+	public void setObject(BlockObject object) {
 		Object = object;
 	}
 	public int getxPosition() {

@@ -4,7 +4,7 @@ package object;
 
 import javafx.scene.image.Image;
 
-public class Carrot extends Obstacle{
+public class Carrot extends BlockObject{
 	// Source ภาพ
 	private final Image CarrotImage	= new Image(getClass().getResource("/carrot.png").toExternalForm());;
 	

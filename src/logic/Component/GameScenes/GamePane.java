@@ -1,4 +1,4 @@
-package logic.Component;
+package logic.Component.GameScenes;
 
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
@@ -6,20 +6,22 @@ import javafx.scene.layout.StackPane;
 
 public class GamePane extends StackPane {
 	private LayoutPane layoutPane;
-	private GameCanvas gameCanvas;
+	private PlayerCanvas playerCanvas;
 	private WeaponCanvas weaponCanvas;
+	private DropCanvas dropCanvas = new DropCanvas();
 
-	public GamePane(LayoutPane layoutPane, GameCanvas gameCanvas,WeaponCanvas weaponCanvas) {
+	public GamePane(LayoutPane layoutPane, PlayerCanvas playerCanvas,WeaponCanvas weaponCanvas) {
 		super();
 		this.layoutPane = layoutPane;
-		this.gameCanvas = gameCanvas;
-		gameCanvas.widthProperty().bind(layoutPane.widthProperty());
-		gameCanvas.heightProperty().bind(layoutPane.heightProperty());
+		this.playerCanvas = playerCanvas;
+		playerCanvas.widthProperty().bind(layoutPane.widthProperty());
+		playerCanvas.heightProperty().bind(layoutPane.heightProperty());
 		//GamePane.setAlignment(layoutPane, Pos.CENTER);
 		//GamePane.setAlignment(gameCanvas, Pos.CENTER);
 		this.setPrefSize(850, 450);
 		this.weaponCanvas = weaponCanvas;
-		this.getChildren().addAll(layoutPane, gameCanvas,weaponCanvas);
+		
+		this.getChildren().addAll(layoutPane, playerCanvas,weaponCanvas, dropCanvas);
 	}
 
 	public LayoutPane getLayoutPane() {
@@ -30,12 +32,12 @@ public class GamePane extends StackPane {
 		this.layoutPane = layoutPane;
 	}
 
-	public GameCanvas getGameCanvas() {
-		return gameCanvas;
+	public PlayerCanvas getGameCanvas() {
+		return playerCanvas;
 	}
 
-	public void setGameCanvas(GameCanvas gameCanvas) {
-		this.gameCanvas = gameCanvas;
+	public void setGameCanvas(PlayerCanvas playerCanvas) {
+		this.playerCanvas = playerCanvas;
 	}
 
 	public WeaponCanvas getWeaponCanvas() {
@@ -45,5 +47,9 @@ public class GamePane extends StackPane {
 	public void setWeaponCanvas(WeaponCanvas weaponCanvas) {
 		this.weaponCanvas = weaponCanvas;
 	}
-
+	
+	
+	public DropCanvas getDropCanvas() {
+		return dropCanvas;
+	}
 }
