@@ -246,8 +246,10 @@ public class WeaponCanvas extends Canvas {
 				startAngle = 45;
 			double Angle = 0;
 			p.setSpeed(0);
+			gc.setFill(Color.WHITE);
 			while (Angle < 90) {
 				Angle += 15;
+				
 				gc.clearRect(xpos, yPos, 120, 120);
 				gc.fillArc(xpos - 30, yPos - 30, 120, 120, startAngle, Angle, javafx.scene.shape.ArcType.ROUND);
 				try {
@@ -259,12 +261,12 @@ public class WeaponCanvas extends Canvas {
 			}
 			if (dirLR != 0 && GameController.getLayoutPane()
 					.GetEachPane(GameLogic.getxPane(p) + dirLR, GameLogic.getyPane(p)).getObject() instanceof Floor) {
-				GameLogic.Break(GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p) + dirLR,
-						GameLogic.getyPane(p)));
+				Platform.runLater(() -> GameLogic.Break(GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p) + dirLR,
+						GameLogic.getyPane(p))));
 			} else if (dirUD != 0 && GameController.getLayoutPane()
 					.GetEachPane(GameLogic.getxPane(p), GameLogic.getyPane(p) + dirUD).getObject() instanceof Floor) {
-				GameLogic.Break(GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p),
-						GameLogic.getyPane(p) + dirUD));
+				Platform.runLater(() -> GameLogic.Break(GameController.getLayoutPane().GetEachPane(GameLogic.getxPane(p),
+						GameLogic.getyPane(p) + dirUD)));
 			}
 			while (Angle > 0) {
 				Angle -= 15;
@@ -328,17 +330,17 @@ public class WeaponCanvas extends Canvas {
 			gc.setLineWidth(2);
 			boolean up = true;
 			while (isPickedUp == false) {
-				gc.clearRect(xPos, curPos, 50, 50);
+				gc.clearRect(xPos*50, curPos, 50, 50);
 				if (up == true)
 					curPos += speed;
 				else
 					curPos -= speed;
 				gc.setFill(Color.rgb(173, 216, 230, 0.5));
-				gc.strokeOval(xPos * 50, curPos + speed, 50, 50);
-				gc.fillOval(xPos * 50, curPos + speed, 50, 50);
+				gc.strokeOval(xPos * 50, curPos, 50, 50);
+				gc.fillOval(xPos * 50, curPos, 50, 50);
 				gc.setFill(Color.rgb(255, 255, 255, 0.3));
-				gc.fillOval(xPos + 5, curPos + 5, 7.5, 7.5);
-				gc.drawImage(weapon.getImage(), xPos * 50 + 7, curPos * 50 + 7, 35.4, 35.4);
+				gc.fillOval(xPos*50+ 5, curPos + 5, 7.5, 7.5);
+				gc.drawImage(weapon.getImage(), xPos * 50 + 7, curPos + 7, 35.4, 35.4);
 				if (curPos > (yPos * 50) + 5)
 					up = false;
 				else if (curPos < (yPos * 50) - 5)
@@ -346,12 +348,18 @@ public class WeaponCanvas extends Canvas {
 				if (GameLogic.collide(GameController.getGameCanvas().getP1().getxPosition() + 22.5,
 						GameController.getGameCanvas().getP1().getyPosition() + 22.5, xPos * 50, yPos * 50, 50, 50)) {
 					GameController.getGameCanvas().getP1().setHoldedWeapon(weapon);
-					weapon.setP(GameController.getGameCanvas().getP1());
+					Platform.runLater(() -> {
+						weapon.setP(GameController.getGameCanvas().getP1());
+						
+					});
 					isPickedUp = true;
 				} else if (GameLogic.collide(GameController.getGameCanvas().getP2().getxPosition() + 22.5,
 						GameController.getGameCanvas().getP2().getyPosition() + 22.5, xPos * 50, yPos * 50, 50, 50)) {
 					GameController.getGameCanvas().getP2().setHoldedWeapon(weapon);
-					weapon.setP(GameController.getGameCanvas().getP2());
+					Platform.runLater(() -> {
+						weapon.setP(GameController.getGameCanvas().getP2());
+						
+					});
 					isPickedUp = true;
 				}
 				try {
@@ -360,7 +368,7 @@ public class WeaponCanvas extends Canvas {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				gc.clearRect(xPos*50-1,yPos *50 - 5,52,60);
+				gc.clearRect(xPos*50-1,curPos,52,60);
 			}
 		}).start();
 	}

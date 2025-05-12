@@ -71,21 +71,21 @@ public class MainMenuPane extends VBox {
 		
 		Button music = StyledTogglingButton(MUSICON);
 		String musicPath = getClass().getResource("/bgSong.mp3").toExternalForm();
-		Media media = new Media(musicPath);
-		MediaPlayer mediaPlayer = new MediaPlayer(media);
-		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
-		mediaPlayer.setVolume(0.05);
-		mediaPlayer.play();
-		music.setOnMouseClicked(e -> {
-			musicIsOn = !musicIsOn;
-			if (musicIsOn) {
-				mediaPlayer.play();
-				music.setGraphic(MUSICON);
-			} else {
-				mediaPlayer.stop();
-				music.setGraphic(MUSICOFF);
-			}
-		});
+		//Media media = new Media(musicPath);
+		//MediaPlayer mediaPlayer = new MediaPlayer(media);
+		//mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
+		//mediaPlayer.setVolume(0.05);
+		//mediaPlayer.play();
+		//music.setOnMouseClicked(e -> {
+			//musicIsOn = !musicIsOn;
+			//if (musicIsOn) {
+				//mediaPlayer.play();
+				//music.setGraphic(MUSICON);
+			//} else {
+				//mediaPlayer.stop();
+				//music.setGraphic(MUSICOFF);
+			//}
+		//});
 		hBox.setAlignment(Pos.CENTER);
 		hBox.getChildren().addAll(sound, music);
 

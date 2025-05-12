@@ -103,7 +103,12 @@ public class GameCanvas extends Canvas {
 
 				if (keyboard.isP2RightPressed() && !GameLogic.HasRightObject(p2))
 					dirLR2 = 1;
-
+				if (keyboard.isP1weaponPressed()) {
+					p1.getHoldedWeapon().useWeapon(p1.getxPosition(), p1.getyPosition(), dirLR1, dirUD1);
+				}
+				if (keyboard.isP1weaponPressed()) {
+					p2.getHoldedWeapon().useWeapon(p2.getxPosition(), p2.getyPosition(), dirLR2, dirUD2);
+				}
 				p1.move(dirLR1, dirUD1);
 				p2.move(dirLR2, dirUD2);
 

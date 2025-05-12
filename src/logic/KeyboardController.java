@@ -10,11 +10,14 @@ public class KeyboardController {
 	private boolean p1LeftPressed = false;
 	private boolean p1RightPressed = false;
 	private boolean p1BombPressed = false;
+	private boolean p1weaponPressed = false;
 	private boolean p2UpPressed = false;
 	private boolean p2DownPressed = false;
 	private boolean p2LeftPressed = false;
 	private boolean p2RightPressed = false;
 	private boolean p2BombPressed = false;
+	private boolean p2weaponPressed = false;
+
 
 	public KeyboardController() {
 		keyboardSetup();
@@ -34,6 +37,8 @@ public class KeyboardController {
 					setP1RightPressed(true);
 				if (e.getCode() == KeyCode.SPACE)
 					setP1BombPressed(true);
+				if (e.getCode() == KeyCode.SHIFT)
+					setP1weaponPressed(true);
 
 				if (e.getCode() == KeyCode.UP)
 					setP2UpPressed(true);
@@ -44,6 +49,8 @@ public class KeyboardController {
 				if (e.getCode() == KeyCode.RIGHT)
 					setP2RightPressed(true);
 				if (e.getCode() == KeyCode.ENTER)
+					setP2BombPressed(true);
+				if (e.getCode() == KeyCode.DIGIT1)
 					setP2BombPressed(true);
 			}
 		});
@@ -60,6 +67,8 @@ public class KeyboardController {
 						setP1RightPressed(false);
 					if (e.getCode() == KeyCode.SPACE)
 						setP1BombPressed(false);
+					if (e.getCode() == KeyCode.SHIFT)
+						setP1BombPressed(false);
 
 					if (e.getCode() == KeyCode.UP)
 						setP2UpPressed(false);
@@ -70,6 +79,8 @@ public class KeyboardController {
 					if (e.getCode() == KeyCode.RIGHT)
 						setP2RightPressed(false);
 					if (e.getCode() == KeyCode.ENTER)
+						setP2BombPressed(false);
+					if (e.getCode() == KeyCode.DIGIT1)
 						setP2BombPressed(false);
 				
 			}
@@ -115,6 +126,14 @@ public class KeyboardController {
 	public void setP1BombPressed(boolean p1BombPressed) {
 		this.p1BombPressed = p1BombPressed;
 	}
+	
+	public void setP1weaponPressed(boolean p1weaponPressed) {
+		this.p1weaponPressed = p1weaponPressed;
+	}
+	
+	public boolean isP1weaponPressed() {
+		return p1weaponPressed;
+	}
 
 	public boolean isP2UpPressed() {
 		return p2UpPressed;
@@ -156,6 +175,12 @@ public class KeyboardController {
 		this.p2BombPressed = p2BombPressed;
 	}
 
+	public void setP2weaponPressed(boolean p2weaponPressed) {
+		this.p2weaponPressed = p2weaponPressed;
+	}
 	
+	public boolean isP2weaponPressed() {
+		return p2weaponPressed;
+	}
 
 }
