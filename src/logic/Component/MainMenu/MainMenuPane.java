@@ -53,6 +53,7 @@ public class MainMenuPane extends VBox {
 		// how to play button
 		Button howToPlay = new ButtonTemplate(new Text("How to play"));
 		this.setMargin(howToPlay, new Insets(10,10,10,10));
+		howToPlay.setOnMouseClicked(e -> GameController.toHowToPlayScene());
 		
 		// hbox for 2 button2 -> soundon/off and music on/off
 		HBox hBox = new HBox();

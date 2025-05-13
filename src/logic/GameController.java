@@ -9,14 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import logic.Component.*;
-import logic.Component.GameScenes.DropCanvas;
-import logic.Component.GameScenes.PlayerCanvas;
-import logic.Component.GameScenes.GamePane;
-import logic.Component.GameScenes.LayoutPane;
-import logic.Component.GameScenes.WeaponCanvas;
+import logic.Component.GameScenes.*;
 import logic.Component.GameScenes.BottomBar.StatusPane;
-import logic.Component.MainMenu.MainMenuPane;
-import logic.Component.MainMenu.MapSelectorPane;
+import logic.Component.MainMenu.*;
 import logic.Player.Player;
 import java.util.ArrayList;
 
@@ -25,6 +20,7 @@ import Util.MapReader;
 public class GameController {
 
 	private static MainMenuPane menuPane;
+	private static HowToPlay howToPlayPane;
 	private static MapSelectorPane mapSelectorPane;
 	private static PlayerCanvas playerCanvas;
 	private static WeaponCanvas weaponCanvas;
@@ -104,7 +100,18 @@ public class GameController {
 		root.getChildren().add(gameOverPane);
 
 	}
-
+	
+	public static void toHowToPlayScene() {
+		howToPlayPane = new HowToPlay();
+		root.getChildren().clear();
+		root.getChildren().add(howToPlayPane);
+	}
+	
+	public static void toMainMenuScene() {
+		root.getChildren().clear();
+		root.getChildren().add(menuPane);
+	}
+	
 	public static void createMap() {
 		// MapReader mapreader = new MapReader("/Map1.txt");
 		String Path = "/Map" + (mapNum + 1) + ".txt";

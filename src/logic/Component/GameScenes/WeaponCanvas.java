@@ -297,7 +297,6 @@ public class WeaponCanvas extends Canvas {
                 stop(); // stop animation                
                 return;
             }
-            
 
             // Check collision with players
             if (GameLogic.collide(GameController.getPlayerCanvas().getP1(), rockX[0], rockY[0], 50, 50)) {
