@@ -1,13 +1,11 @@
 package logic.Component.GameScenes;
 
 import javafx.geometry.Insets;
-import javafx.geometry.Side;
+
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
@@ -25,22 +23,19 @@ public class EachPane extends Pane{
 	private int yPosition;
 	private Color basecolor = Color.web("#488f3d");
 	private Weapon weapondrop;
-	
-	private int Mapnum;
 	private final int PANE_WIDTH = 50;
 	private final int PANE_HEIGHT = 50;
 	
 	
 	public EachPane(BlockObject Object, int xPosition, int yPosition, int index) {
 		this.setObject(Object);
-		this.setMapnum(index);
 		this.setxPosition(xPosition);
 		this.setyPosition(yPosition);
 		this.setMinSize(PANE_WIDTH, PANE_HEIGHT);
 		this.drawcell(this.getObject().getImage(index));
-		//this.setStyle("-fx-background-color: lightblue; -fx-background-radius: 20;");
 	}
-	
+	// draw only Pane that has Object thats not a Floor inside of it
+	// so the backgroundimage is actually from the layoutpane
 	public void drawcell(Image image) {
 		if(!(this.getObject() instanceof Floor)) {
 			BackgroundSize bgSize = new BackgroundSize(50,50,false,false,false,false);
@@ -81,11 +76,7 @@ public class EachPane extends Pane{
 		this.weapondrop = weapondrop;
 	}
 	
-	public void Break() {
-		this.setObject(new Floor(this.getxPosition(),this.getyPosition()));
-	}
-	
-	public void setMapnum(int index) {
-		this.Mapnum = index;
-	}
+	//public void Break() {
+	//	this.setObject(new Floor(this.getxPosition(),this.getyPosition()));
+	//}
 }

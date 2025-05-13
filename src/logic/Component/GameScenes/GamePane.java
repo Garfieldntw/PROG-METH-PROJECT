@@ -16,8 +16,6 @@ public class GamePane extends StackPane {
 		this.playerCanvas = playerCanvas;
 		playerCanvas.widthProperty().bind(layoutPane.widthProperty());
 		playerCanvas.heightProperty().bind(layoutPane.heightProperty());
-		//GamePane.setAlignment(layoutPane, Pos.CENTER);
-		//GamePane.setAlignment(gameCanvas, Pos.CENTER);
 		this.setPrefSize(850, 450);
 		this.weaponCanvas = weaponCanvas;
 		

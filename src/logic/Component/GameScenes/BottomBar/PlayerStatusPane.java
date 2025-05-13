@@ -31,10 +31,10 @@ public class PlayerStatusPane extends HBox{
 		this.p = p;
 		// Create a border stroke
 		BorderStroke borderStroke = new BorderStroke(
-		    Color.web("#76310c"),                // Border color
-		    BorderStrokeStyle.SOLID,   // Border style
-		    new CornerRadii(10),        // Rounded corners (use CornerRadii.EMPTY for square)
-		    new BorderWidths(2)        // Thickness of the border
+		    Color.web("#76310c"),    
+		    BorderStrokeStyle.SOLID,   
+		    new CornerRadii(10),       
+		    new BorderWidths(2)        
 		);
 
 		// Apply the border

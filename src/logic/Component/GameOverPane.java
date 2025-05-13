@@ -19,16 +19,20 @@ public class GameOverPane extends VBox {
 	public GameOverPane(String winnerName, Image image,Color color) {
 		super(20);
 		
+		// set winner text or draw text
 		Text winText = new Text(winnerName);
 		winText.setFont(Font.font("Monospaced", FontWeight.EXTRA_BOLD, 24));
+		
+		//set winner image or draw image
 		ImageView winnerImageView = new ImageView(image);
 		winnerImageView.setFitWidth(150);
 		winnerImageView.setPreserveRatio(true);
 		
-		
+		//exitbutton
 		Button exitButton = new ButtonTemplate(new Text("Exit Game"));
 		exitButton.setOnMouseClicked(e -> System.exit(0));
 
+		//styling
 		setAlignment(Pos.CENTER);
 		setSpacing(20);
 		this.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));

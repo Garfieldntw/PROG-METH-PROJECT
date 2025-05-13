@@ -22,6 +22,8 @@ import logic.GameController;
 
 public class LayoutPane extends GridPane{
 	private ArrayList<ArrayList<EachPane>> map;
+	// mapint is map but in the Integere form (like 1 2 3 2 4 1)
+	// so that we can import the map and easily create the map
 	private ArrayList<ArrayList<Integer>> mapint;
 	private int mapNum;
 	private final int mapwidth = 17;
@@ -47,12 +49,11 @@ public class LayoutPane extends GridPane{
 		drawBackground();
 		initializePane();
 	}
-
+	// initialize each pane
 	private void initializePane() {
-		// TODO Auto-generated method stub
-		System.out.println("create map " + mapNum);
 		for(int j = 0; j < mapint.size(); j++) {
 			for(int i = 0; i < mapint.get(j).size() ; i++) {
+				// create the map for each int in mapint
 				switch (mapint.get(j).get(i)) {
 				case 0 -> {
 					map.get(j).set(i, new EachPane(new Floor(i, j), i, j, mapNum));
@@ -79,7 +80,7 @@ public class LayoutPane extends GridPane{
 		}
 	}
 	
-	public EachPane GetEachPane(int xPosition, int yPosition) {
+	public EachPane getEachPane(int xPosition, int yPosition) {
 		return map.get(yPosition).get(xPosition);
 	}
 	

@@ -10,7 +10,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import logic.Component.*;
 import logic.Component.GameScenes.DropCanvas;
-import logic.Component.GameScenes.EachPane;
 import logic.Component.GameScenes.PlayerCanvas;
 import logic.Component.GameScenes.GamePane;
 import logic.Component.GameScenes.LayoutPane;
@@ -19,17 +18,9 @@ import logic.Component.GameScenes.BottomBar.StatusPane;
 import logic.Component.MainMenu.MainMenuPane;
 import logic.Component.MainMenu.MapSelectorPane;
 import logic.Player.Player;
-import item.*;
-import item.buff.*;
-
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 import Util.MapReader;
-import object.*;
 
 public class GameController {
 
@@ -51,8 +42,7 @@ public class GameController {
 			new Image(GameController.class.getResource("/woodTexture.png").toExternalForm(),true),
 			new Image(GameController.class.getResource("/dirtFloor.png").toExternalForm(),true)
 	};
-
-
+	// initialize MainMenuPane
 	public static void setupScene() {	
 		// set Vbox
 		root = new VBox();
@@ -60,6 +50,7 @@ public class GameController {
 		root.setAlignment(Pos.CENTER);
 		root.setPadding(Insets.EMPTY);
 		scene = new Scene(root, 850, 630); // scene size
+		
 		// initiating
 		isGameEnded = false;
 		menuPane = new MainMenuPane();
@@ -71,18 +62,17 @@ public class GameController {
 		root.getChildren().clear();
 		root.getChildren().add(menuPane);
 	}
-	
+	// SelectMap
 	public static void toMapSelectorScene() {
 		mapSelectorPane = new MapSelectorPane();
 		root.getChildren().clear();
 		root.getChildren().add(mapSelectorPane);
 	}
-	
+	// Generate Map choosed
 	public static void toGameScene() {
 		createMap();
 		dropCanvas = new DropCanvas();
 		keyboardController = new KeyboardController();
-		System.out.println("this map = " + mapNum);
 		layoutPane = new LayoutPane(epList, mapNum);
 		playerCanvas = new PlayerCanvas(17 * 50, 9 * 50);
 		weaponCanvas = new WeaponCanvas(850, 450);
@@ -95,7 +85,7 @@ public class GameController {
 	public static void setGameEndWithWinner(boolean isGameEnded, Player player) {
 		GameController.isGameEnded = isGameEnded;
 		Player winner = playerCanvas.getP1();
-		if (player.getName().equals("Player 1"))
+		if (player.getName().equals("Player 1")) // if loser is 1 -> winner is 2
 			winner = playerCanvas.getP2();
 		GameOverPane gameOverPane = new GameOverPane(winner.getName() + " Wins!", winner.getPlayerImage().get(0), player.getColor());
 		toGameOverScene(gameOverPane);
@@ -104,7 +94,7 @@ public class GameController {
 	public static void setGameEnded(boolean isGameEnded) {
 		GameController.isGameEnded = isGameEnded;
 		Image drawImage = new Image(GameController.class.getResource("/drawImage.png").toExternalForm());
-		GameOverPane gameOverPane = new GameOverPane("Draw!", drawImage, Color.GRAY);
+		GameOverPane gameOverPane = new GameOverPane("Draw!", drawImage, Color.GRAY); // if game ends in draw, background is gray
 		toGameOverScene(gameOverPane);
 	}
 

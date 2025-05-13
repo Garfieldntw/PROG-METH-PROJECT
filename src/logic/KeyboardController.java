@@ -21,7 +21,7 @@ public class KeyboardController {
 	private boolean p2RightPressed = false;
 	private boolean p2BombPressed = false;
 	private boolean p2WeaponPressed = false;
-	private Set<KeyCode> pressedKeys = new HashSet<>();
+	private Set<KeyCode> pressedKeys = new HashSet<>(); // to ensure that this triggers only once even when the key is holded
 
 	public KeyboardController() {
 		keyboardSetup();

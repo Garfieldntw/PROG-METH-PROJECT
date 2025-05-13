@@ -25,7 +25,7 @@ public class ItemObject extends BlockObject implements Breakable{
 	}
 
 	@Override
-	public void Break() {
+	public void breakObject() {
 		// TODO Auto-generated method stub
 		this.setBreak(true);
 		

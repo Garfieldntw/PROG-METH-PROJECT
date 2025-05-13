@@ -33,10 +33,7 @@ public class TimePane extends VBox {
 		timer.setFill(Color.ANTIQUEWHITE);
 		Button endGame = new ButtonTemplate(new Text("End Game"));
 		endGame.setPrefWidth(130);
-		
-		//endGame.setOnMouseEntered(() -> {
-			
-		//});
+
 		this.getChildren().add(timer);
 		this.getChildren().addAll(endGame);
 		endGame.setOnMouseClicked(event -> Platform.runLater(() -> GameController.setGameEnded(true)));
@@ -59,6 +56,7 @@ public class TimePane extends VBox {
 				if (seconds < 0) {
 					seconds = 59;
 					minutes--;
+					// increase Everyone bombpower every 1 minutes
 					GameLogic.increaseBombPower(GameController.getPlayerCanvas().getP1());
 					GameLogic.increaseBombPower(GameController.getPlayerCanvas().getP2());
 					GameLogic.updateBombPower();

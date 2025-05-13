@@ -8,16 +8,12 @@ public class NoWeapon extends Weapon{
 		super(durability, p);
 	}
 	
-	public void Broke() {
-		;
-	}
-	
 	public Image getImage() {
 		return fistImage;
 	}
 	
 	public void useWeapon(double xPos, double yPos, Direction direction) {
-		System.out.println(this.getP().getName() + " don't have any weapon");
+		;
 	}
 	
 	@Override
@@ -27,7 +23,6 @@ public class NoWeapon extends Weapon{
 	
 	@Override
 	public java.lang.String toString() {
-		// TODO Auto-generated method stub
 		return "NoWeapon";
 	}
 }

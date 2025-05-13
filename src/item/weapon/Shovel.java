@@ -16,15 +16,7 @@ public class Shovel extends Weapon{
 	}
 	@Override
 	public void useWeapon(double xPos, double yPos, Direction direction) {
-		// TODO Auto-generated method stub
-		//int dirLR = 0; int dirUD = 0;
-		//switch (direction) {
-			//case Direction.UP -> dirUD = -1;
-			//case Direction.DOWN -> dirUD = 1;
-			//case Direction.RIGHT -> dirLR = 1;
-			//case Direction.LEFT -> dirLR = -1;
-		//}
-		//GameController.getWeaponCanvas().drawShovel(this.getP(), Xpos, yPos, dirLR, dirUD, GameController.getWeaponCanvas().getGraphicsContext2D());
+		
 		GameController.getWeaponCanvas().playShovelSlashThread(GameController.getWeaponCanvas().getGraphicsContext2D(), ShovelImage, xPos + 22.5, yPos +22.5, direction);
 		this.setDurability(getDurability() - 1);
 	}

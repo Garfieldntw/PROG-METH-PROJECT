@@ -30,9 +30,9 @@ public class WeaponCanvas extends Canvas {
 	public WeaponCanvas(double width, double height) {
 		super(width, height);
 		this.bombImage = new ArrayList<>();
-		bombImage.add(new Image(getClass().getResource("/bombImage1.png").toExternalForm()));
-		bombImage.add(new Image(getClass().getResource("/bombImage2.png").toExternalForm()));
-		bombImage.add(new Image(getClass().getResource("/bombImage3.png").toExternalForm()));
+		bombImage.add(new Image(getClass().getResource("/bombImage1.png").toExternalForm(), true));
+		bombImage.add(new Image(getClass().getResource("/bombImage2.png").toExternalForm(), true));
+		bombImage.add(new Image(getClass().getResource("/bombImage3.png").toExternalForm(), true));
 		throwingSound.setVolume(0.5);
 		bombSound.setVolume(0.1);
 		explodeSound.setVolume(0.1);
@@ -40,7 +40,7 @@ public class WeaponCanvas extends Canvas {
 		// Add player health, spawnpoint
 	}
 
-	public void Drawbomb(Player p, GraphicsContext gc) {
+	public void drawbomb(Player p, GraphicsContext gc) {
 		double xPos = GameLogic.getxPaneNumOfPlayer(p) * 50;
 		double yPos = GameLogic.getyPaneNumOfPlayer(p) * 50;
 		// if (soundIsOn)
@@ -58,13 +58,13 @@ public class WeaponCanvas extends Canvas {
 			}
 			Platform.runLater(() -> {
 			gc.clearRect(xPos, yPos, 50, 50);
-			FirstExplode(p, xPos, yPos, gc);
+			firstExplode(p, xPos, yPos, gc);
 			});
 			
 		}).start();
 	}
 
-	public void FirstExplode(Player p, double xPos, double yPos, GraphicsContext gc) {
+	public void firstExplode(Player p, double xPos, double yPos, GraphicsContext gc) {
 		//
 		if (GameController.getMenuPane().isSoundOn())  explodeSound.play();
 		new Thread(() -> {
@@ -81,25 +81,18 @@ public class WeaponCanvas extends Canvas {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			Platform.runLater(() -> SecondExplode(p, xPos, yPos, gc));
+			Platform.runLater(() -> secondExplode(p, xPos, yPos, gc));
 		}).start();
 	}
 
-	public void SecondExplode(Player p, double xPos, double yPos, GraphicsContext gc) {
+	public void secondExplode(Player p, double xPos, double yPos, GraphicsContext gc) {
 
 		new Thread(() -> {
 			ArrayList<Double> size = new ArrayList<>();
-			size.add(0.0);
-			size.add(0.0);
-			size.add(0.0);
-			size.add(0.0);
+			size.add(0.0); size.add(0.0); size.add(0.0); size.add(0.0); // left,right,up,down bomb length
 			ArrayList<Boolean> next = new ArrayList<>();
-			next.add(true);
-			next.add(true);
-			next.add(true);
-			next.add(true);
+			next.add(true); next.add(true); next.add(true); next.add(true); //left right up down boolean if continue exploding
 			int realsize = 0;
-
 			while (realsize < p.getBombPower() * 50) {
 				if (GameLogic.getPaneFromXY(xPos - (size.get(0) + 12.5), yPos).getObject() instanceof Floor
 						&& next.get(0)) {
@@ -134,10 +127,9 @@ public class WeaponCanvas extends Canvas {
 					next.set(3, false);
 				}
 				Platform.runLater(() -> {
-					Clearrect(gc, size, xPos, yPos);
+					clearrect(gc, size, xPos, yPos);
 					drawExplosion(gc, size, xPos, yPos);
 				});
-
 				if (GameLogic.collide(GameController.getPlayerCanvas().getP1(), xPos - size.get(0), yPos,
 						size.get(0) + size.get(1) + 50, 50)
 						|| GameLogic.collide(GameController.getPlayerCanvas().getP1(), xPos, yPos - size.get(2), 50,
@@ -191,8 +183,7 @@ public class WeaponCanvas extends Canvas {
 		});
 	}
 
-	private void Clearrect(GraphicsContext gc, ArrayList<Double> size, double xPos, double yPos) {
-		// TODO Auto-generated method stub
+	private void clearrect(GraphicsContext gc, ArrayList<Double> size, double xPos, double yPos) {
 		Platform.runLater(() -> {
 			gc.clearRect(xPos - size.get(0), yPos, size.get(0), 50);
 			// to right
@@ -277,11 +268,11 @@ public class WeaponCanvas extends Canvas {
         gc.restore();
 	}
 	
-	public void ThrowRock(double xPos, double yPos, int dirLR, int dirUD, GraphicsContext gc) {
+	public void throwRock(double xPos, double yPos, int dirLR, int dirUD, GraphicsContext gc) {
     final double speed = 4;
     final double[] rockX = {xPos};
     final double[] rockY = {yPos};
-    // if (soundIsOn)
+    
     if (GameController.getMenuPane().isSoundOn()) throwingSound.play();
     AnimationTimer timer = new AnimationTimer() {
         @Override
@@ -306,8 +297,6 @@ public class WeaponCanvas extends Canvas {
                 stop(); // stop animation                
                 return;
             }
-
-            // Draw the rock
             
 
             // Check collision with players
@@ -315,11 +304,13 @@ public class WeaponCanvas extends Canvas {
                 GameController.getPlayerCanvas().getP1()
                     .getHurt();
                 System.out.println("hit player 1");
+                gc.clearRect(rockX[0]- 5, rockY[0]-5, 60, 60);
                 stop();
             } else if (GameLogic.collide(GameController.getPlayerCanvas().getP2(), rockX[0], rockY[0], 50, 50)) {
                 GameController.getPlayerCanvas().getP2()
                     .getHurt();
                 System.out.println("hit player 2");
+                gc.clearRect(rockX[0]- 5, rockY[0]-5, 60, 60);
                 stop();
             }
         }

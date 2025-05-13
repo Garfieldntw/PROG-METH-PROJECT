@@ -22,7 +22,7 @@ public class Rock extends Weapon{
 			case Direction.RIGHT -> dirLR = 1;
 			case Direction.LEFT -> dirLR = -1;
 		}
-		GameController.getWeaponCanvas().ThrowRock(xPos + 50*dirLR, yPos + 50*dirUD, dirLR, dirUD, GameController.getWeaponCanvas().getGraphicsContext2D());
+		GameController.getWeaponCanvas().throwRock(xPos + 50*dirLR, yPos + 50*dirUD, dirLR, dirUD, GameController.getWeaponCanvas().getGraphicsContext2D());
 		this.setDurability(getDurability() - 1);
 	}
 

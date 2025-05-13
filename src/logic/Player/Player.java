@@ -44,14 +44,14 @@ public class Player {
 		this.direction = direction;
 		setColor();
 		// this.setHoldedWeapon(new Rock(20, this));
-		this.setHoldedWeapon(new Shovel(100, this));
-		// this.setHoldedWeapon(new NoWeapon(1, this));
+		//this.setHoldedWeapon(new Shovel(100, this));
+		this.setHoldedWeapon(new NoWeapon(1, this));
 		// walk animation (to be fixed)
 		PlayerImage = new ArrayList<>();
-		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteFront.png").toExternalForm()));
-		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteBack.png").toExternalForm()));
-		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteLeft.png").toExternalForm()));
-		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteRight.png").toExternalForm()));
+		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteFront.png").toExternalForm(), true));
+		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteBack.png").toExternalForm(), true));
+		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteLeft.png").toExternalForm(), true));
+		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteRight.png").toExternalForm(), true));
 		placeBomb();
 	}
 
@@ -82,16 +82,14 @@ public class Player {
 		Thread thread = new Thread(() -> {
 			while (!GameController.isGameEnded()) {
 				try {
-					if ((GameController.getKeyboardController().isP1BombPressed() && getName() == "Player 1")
-							|| (GameController.getKeyboardController().isP2BombPressed() && getName() == "Player 2")) {
+					if ((GameController.getKeyboardController().isP1BombPressed() && getName().equals("Player 1"))
+							|| (GameController.getKeyboardController().isP2BombPressed() && getName().equals("Player 2"))) {
 						isBombPlaced = true;
-						
 						// draw bomb
-						GameLogic.DrawBomb(this);
+						GameLogic.drawBomb(this);
 						isBombPlaced = false;
 						Thread.sleep(5000);
 					}
-
 					Thread.sleep(30);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -118,7 +116,8 @@ public class Player {
 	}
 
 	public void setSpeed(int speed) {
-		this.speed = speed;
+		if(speed < 0) this.speed = 0;
+		else this.speed = speed;
 	}
 
 	public String getName() {
@@ -145,9 +144,9 @@ public class Player {
 	public boolean isDead() {
 		return isDead;
 	}
-
-	public void setDead(boolean isDead) {
-		this.isDead = isDead;
+	// if someone dies, set the game to be ending and set another player a winner
+	public void setDead(boolean Dead) {
+		this.isDead = Dead;
 		if (isDead) {
 			Platform.runLater(() -> GameController.setGameEndWithWinner(true, this));
 		}
@@ -190,50 +189,41 @@ public class Player {
 	}
 
 	public void render(GraphicsContext gc) {
-		// TODO Auto-generated method stub
-
-		
 		double aspectRatio = PlayerImage.get(0).getWidth() * height;
 		double targetWidth = aspectRatio / PlayerImage.get(0).getHeight();
-
+		// draw PlayerImage for Each Direction they turn to.
 		switch (direction) {
 		case Direction.UP ->
-			gc.drawImage(PlayerImage.get(1), getxPosition() - targetWidth / 2, getyPosition(), targetWidth, height);
+			gc.drawImage(PlayerImage.get(1), getxPosition() +  (50 - targetWidth) / 2, getyPosition(), targetWidth, height);
 		case Direction.DOWN ->
-			gc.drawImage(PlayerImage.get(0), getxPosition() - targetWidth / 2, getyPosition(), targetWidth, height);
+			gc.drawImage(PlayerImage.get(0), getxPosition() +  (50 - targetWidth) / 2, getyPosition(), targetWidth, height);
 		case Direction.RIGHT ->
-			gc.drawImage(PlayerImage.get(3), getxPosition() - targetWidth / 2, getyPosition(), targetWidth, height);
+			gc.drawImage(PlayerImage.get(3), getxPosition() +  (50 - targetWidth) / 2, getyPosition(), targetWidth, height);
 		case Direction.LEFT ->
-			gc.drawImage(PlayerImage.get(2), getxPosition() - targetWidth / 2, getyPosition(), targetWidth, height);
+			gc.drawImage(PlayerImage.get(2), getxPosition() +  (50 - targetWidth) / 2, getyPosition(), targetWidth, height);
 		}
 		double triangleWidth = 14;
 		double triangleHeight = 10;
-		double centerX = xPosition + targetWidth/2;
+		double centerX = xPosition + targetWidth/2 + (50 - targetWidth) / 2;
 		double centerY = yPosition - 20; // position above the head
-
 		// Coordinates for an upside-down triangle
 		double[] xPoints = { centerX - triangleWidth / 2, centerX + triangleWidth / 2, centerX };
 		double[] yPoints = { centerY, centerY, centerY + triangleHeight };
 		gc.setFill(color);
-
 		gc.fillPolygon(xPoints, yPoints, 3);
-
-
 	}
 
 	public void getHurt() {
 		new Thread(() -> {
+			//set Invincible so they dont continueusly taking damage
 			if (!isInvincible) {
 				this.setHealth(health - 1);
 				this.setInvincible(true);
-				if (name == "Player 1")
-					GameController.getStatusPane().getP1Status().updateHealth();
-				else
-					GameController.getStatusPane().getP2Status().updateHealth();
+				if (name.equals("Player 1")) GameController.getStatusPane().getP1Status().updateHealth();	
+				else GameController.getStatusPane().getP2Status().updateHealth();	
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				this.setInvincible(false);

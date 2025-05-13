@@ -1,10 +1,9 @@
 package item.buff;
-import logic.GameController;
 import logic.Player.*;
 import javafx.scene.image.Image;
 import logic.GameLogic;
 public class SpeedBuff extends Buff{
-	private final Image speedBuffImage = new Image(getClass().getResource("/bulletImage.png").toExternalForm());;
+	private final Image speedBuffImage = new Image(getClass().getResource("/speedBoots.png").toExternalForm());;
 	
 	
 	public SpeedBuff() {
@@ -12,13 +11,11 @@ public class SpeedBuff extends Buff{
 	}
 	
 	public Image getImage() {
-		// TODO Auto-generated method stub
 		return speedBuffImage;
 	}
 
 	@Override
 	public void applyBuff(Player p) {
-		// TODO Auto-generated method stub
 		p.setSpeed(p.getSpeed() + 1);
 		GameLogic.updateSpeed();
 	}

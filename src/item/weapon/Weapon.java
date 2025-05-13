@@ -2,7 +2,6 @@ package item.weapon;
 
 import item.Item;
 import javafx.scene.control.skin.TextInputControlSkin.Direction;
-import logic.GameController;
 import logic.Player.*;
 import logic.GameLogic;
 public abstract class Weapon extends Item{
@@ -27,13 +26,12 @@ public abstract class Weapon extends Item{
 		return durability;
 	}
 	public void setDurability(int durability) {
-		if(durability <= 0) {
-			this.broke();
-		}
+		if(durability <= 0) this.broke();
 		else this.durability = durability;
 	}
 	protected void broke() {
-		p.setHoldedWeapon(new NoWeapon(1, p));;
+		p.setHoldedWeapon(new NoWeapon(1, p));
+		GameLogic.updateWeapon();
 	}
 	
 	@Override

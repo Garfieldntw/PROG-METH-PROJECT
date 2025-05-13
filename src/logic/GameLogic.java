@@ -31,10 +31,10 @@ public class GameLogic {
 		// shovel and rock have drop rates of 25percent each
 		int randomIndex = rand.nextInt(4);
 		if (randomIndex == 2)
-			GameController.getDropCanvas().Drop(new Shovel(2), xPosition, yPosition,
+			GameController.getDropCanvas().drop(new Shovel(2), xPosition, yPosition,
 					GameController.getWeaponCanvas().getGraphicsContext2D());
 		else if (randomIndex == 3)
-			GameController.getDropCanvas().Drop(new Rock(2), xPosition, yPosition,
+			GameController.getDropCanvas().drop(new Rock(2), xPosition, yPosition,
 					GameController.getWeaponCanvas().getGraphicsContext2D());
 	}
 
@@ -43,19 +43,19 @@ public class GameLogic {
 		Random rand = new Random();
 		int randomIndex = rand.nextInt(5);
 		if (randomIndex == 2)
-			GameController.getDropCanvas().Drop(new SpeedBuff(), xPos, yPos,
+			GameController.getDropCanvas().drop(new SpeedBuff(), xPos, yPos,
 					GameController.getWeaponCanvas().getGraphicsContext2D());
 		else if (randomIndex == 3)
-			GameController.getDropCanvas().Drop(new HealthBuff(), xPos, yPos,
+			GameController.getDropCanvas().drop(new HealthBuff(), xPos, yPos,
 					GameController.getWeaponCanvas().getGraphicsContext2D());
 		else if (randomIndex == 4)
-			GameController.getDropCanvas().Drop(new BombBuff(), xPos, yPos,
+			GameController.getDropCanvas().drop(new BombBuff(), xPos, yPos,
 					GameController.getWeaponCanvas().getGraphicsContext2D());
 	}
 
 	// Return PANE from x and y pixel
 	public static EachPane getPaneFromXY(double xPos, double yPos) {
-		return gamepane.getLayoutPane().GetEachPane((int) (xPos / PaneWidth), (int) (yPos / PaneWidth));
+		return gamepane.getLayoutPane().getEachPane((int) (xPos / PaneWidth), (int) (yPos / PaneWidth));
 	}
 
 	// Return topright PIXEL of the given pane
@@ -121,16 +121,16 @@ public class GameLogic {
 	}
 
 	// --------------------------PLAYER AND OBSTACLE COLLISION LOGIC----------------------------------------------
-	public static boolean HasTopObject(Player p) {
+	public static boolean hasTopObject(Player p) {
 		// check if player overlaps 2 Pane	    -> True: check floor on top and topright
 		//									   	-> False: check just floor on top
 		boolean xOverlapped = p.getxPosition() % PaneWidth > 50 - p.getWidth();
 		
 		boolean floorTopRight = (gamepane.getLayoutPane()
-				.GetEachPane(GameLogic.getxPaneNumOfPlayerTR(p) + 1, GameLogic.getyPanefortop(p) - 1)
+				.getEachPane(GameLogic.getxPaneNumOfPlayerTR(p) + 1, GameLogic.getyPanefortop(p) - 1)
 				.getObject() instanceof Floor);
 		boolean floorTop = (gamepane.getLayoutPane()
-				.GetEachPane(GameLogic.getxPaneNumOfPlayerTR(p), GameLogic.getyPanefortop(p) - 1)
+				.getEachPane(GameLogic.getxPaneNumOfPlayerTR(p), GameLogic.getyPanefortop(p) - 1)
 				.getObject() instanceof Floor);
 
 		if (xOverlapped) {
@@ -139,13 +139,13 @@ public class GameLogic {
 		return !(floorTop);
 	}
 
-	public static boolean HasRightObject(Player p) {
+	public static boolean hasRightObject(Player p) {
 		boolean yOverlapped = p.getyPosition() % PaneWidth > 50 - p.getWidth();
 		boolean floorRight = (gamepane.getLayoutPane()
-				.GetEachPane(GameLogic.getxPaneNumOfPlayerTR(p) + 1, GameLogic.getyPaneNumOfPlayerTR(p))
+				.getEachPane(GameLogic.getxPaneNumOfPlayerTR(p) + 1, GameLogic.getyPaneNumOfPlayerTR(p))
 				.getObject() instanceof Floor);
 		boolean floorRightBottom = (gamepane.getLayoutPane()
-				.GetEachPane(GameLogic.getxPaneNumOfPlayerTR(p) + 1, GameLogic.getyPaneNumOfPlayerTR(p) + 1)
+				.getEachPane(GameLogic.getxPaneNumOfPlayerTR(p) + 1, GameLogic.getyPaneNumOfPlayerTR(p) + 1)
 				.getObject() instanceof Floor);
 		if (yOverlapped) {
 			return !(floorRight) || !(floorRightBottom);
@@ -153,13 +153,13 @@ public class GameLogic {
 		return !(floorRight);
 	}
 
-	public static boolean HasBottomObject(Player p) {
+	public static boolean hasBottomObject(Player p) {
 		boolean xOverlapped = p.getxPosition() % PaneWidth > 50 - p.getWidth();
 		boolean floorBottom = (gamepane.getLayoutPane()
-				.GetEachPane(GameLogic.getxPaneNumOfPlayerTR(p), GameLogic.getyPaneNumOfPlayerTR(p) + 1)
+				.getEachPane(GameLogic.getxPaneNumOfPlayerTR(p), GameLogic.getyPaneNumOfPlayerTR(p) + 1)
 				.getObject() instanceof Floor);
 		boolean floorBottomRight = (gamepane.getLayoutPane()
-				.GetEachPane(GameLogic.getxPaneNumOfPlayerTR(p) + 1, GameLogic.getyPaneNumOfPlayerTR(p) + 1)
+				.getEachPane(GameLogic.getxPaneNumOfPlayerTR(p) + 1, GameLogic.getyPaneNumOfPlayerTR(p) + 1)
 				.getObject() instanceof Floor);
 		if (xOverlapped) {
 			return !(floorBottom) || !(floorBottomRight);
@@ -167,13 +167,13 @@ public class GameLogic {
 		return !(floorBottom);
 	}
 
-	public static boolean HasLeftObject(Player p) {
+	public static boolean hasLeftObject(Player p) {
 		boolean yOverlapped = p.getyPosition() % PaneWidth > 50 - p.getWidth();
 		boolean floorLeft = (gamepane.getLayoutPane()
-				.GetEachPane(GameLogic.getxPaneforleft(p) - 1, GameLogic.getyPaneNumOfPlayerTR(p))
+				.getEachPane(GameLogic.getxPaneforleft(p) - 1, GameLogic.getyPaneNumOfPlayerTR(p))
 				.getObject() instanceof Floor);
 		boolean floorLeftBottom = (gamepane.getLayoutPane()
-				.GetEachPane(GameLogic.getxPaneforleft(p) - 1, GameLogic.getyPaneNumOfPlayerTR(p) + 1)
+				.getEachPane(GameLogic.getxPaneforleft(p) - 1, GameLogic.getyPaneNumOfPlayerTR(p) + 1)
 				.getObject() instanceof Floor);
 		if (yOverlapped) {
 			return !(floorLeft) || !(floorLeftBottom);
@@ -183,9 +183,9 @@ public class GameLogic {
 
 	// ------------------------------------------------BOMB LOGIC-----------------------------------------
 
-	public static void DrawBomb(Player p) {
+	public static void drawBomb(Player p) {
 		// TODO Auto-generated method stub
-		GameController.getWeaponCanvas().Drawbomb(p, GameController.getWeaponCanvas().getGraphicsContext2D());
+		GameController.getWeaponCanvas().drawbomb(p, GameController.getWeaponCanvas().getGraphicsContext2D());
 	}
 
 	// -----------------------------------------WEAPON, EXPLOSION AND PLAYER COLLISIONLOGIC-----------------------------
@@ -205,16 +205,17 @@ public class GameLogic {
 			EachPane newFloor = new EachPane(new Floor(xPos, yPos), xPos, yPos, GameController.getMapnum());
 			GameController.getLayoutPane().getmap().get(yPos).set(xPos, newFloor);
 			GameController.getLayoutPane().add(newFloor, xPos, yPos);
-			System.out.println(GameController.getLayoutPane().GetEachPane(xPos, yPos).getObject());
-			((Breakable) pane.getObject()).Break();
+			System.out.println(GameController.getLayoutPane().getEachPane(xPos, yPos).getObject());
+			((Breakable) pane.getObject()).breakObject();
 		}
 	}
 	
+	//Break all tiles that the given position is in (if breakable))
 	public static void breakbyPosition(double xPos, double yPos) {
-		Platform.runLater(() -> Break(GameController.getLayoutPane().GetEachPane((int) (xPos / 50), (int) (yPos / 50))));
+		Platform.runLater(() -> Break(GameController.getLayoutPane().getEachPane((int) (xPos / 50), (int) (yPos / 50))));
 	}
 
-	// check if
+	// check if player is in a rectangle with topleft pixel of xstart and ystart and length of xSize and height of ySize
 	public static boolean collide(Player p, double xStart, double yStart, double xSize, double ySize) {
 		double playerCenterx = p.getxPosition() + p.getWidth() / 2;
 		double playerCentery = p.getyPosition() + p.getHeight() / 2;
@@ -223,12 +224,7 @@ public class GameLogic {
 		return inX && inY;
 	}
 
-	public static boolean collide(double xPos, double yPos, double xStart, double yStart, double xSize, double ySize) {
-		boolean inX = xPos < xStart + xSize && xPos > xStart;
-		boolean inY = yPos < yStart + ySize && yPos > yStart;
-		return inX && inY;
-	}
-
+	// increase given player's bombpower by 1
 	public static void increaseBombPower(Player p) {
 		// TODO Auto-generated method stub
 		if (p.getName().equals("Player 1"))
@@ -239,6 +235,7 @@ public class GameLogic {
 					.setBombPower(GameController.getPlayerCanvas().getP2().getBombPower() + 1);
 	}
 
+	//--------------------------------------------------Call playerstatuspane to update player's health/bombpower/weapon/speed-------------------
 	public static void updateHealth() {
 		GameController.getStatusPane().getP1Status().updateHealth();
 		GameController.getStatusPane().getP2Status().updateHealth();

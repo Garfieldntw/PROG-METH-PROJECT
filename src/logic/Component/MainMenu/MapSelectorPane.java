@@ -61,7 +61,6 @@ public class MapSelectorPane extends VBox {
 		Map1.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println("Map1 Clicked");
 				GameController.setmapNum(0);
 
 			}
@@ -70,7 +69,6 @@ public class MapSelectorPane extends VBox {
 		Map2.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println("Map2 Clicked");
 				GameController.setmapNum(1);
 				
 			}
@@ -79,7 +77,6 @@ public class MapSelectorPane extends VBox {
 		Map3.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println("Map3 Clicked");
 				GameController.setmapNum(2);
 			}
 		});

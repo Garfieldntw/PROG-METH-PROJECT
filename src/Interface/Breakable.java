@@ -1,6 +1,6 @@
 package Interface;
 
 public interface Breakable {
-	public void Break();
+	public void breakObject();
 	
 }
