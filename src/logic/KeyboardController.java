@@ -36,7 +36,7 @@ public class KeyboardController {
 					pressedKeys.add(code);
 					if (e.getCode() == KeyCode.R)
 						setP1WeaponPressed(true);
-					if (e.getCode() == KeyCode.SHIFT)
+					if (e.getCode() == KeyCode.P)
 						setP2WeaponPressed(true);
 				}
 				if (e.getCode() == KeyCode.W)
