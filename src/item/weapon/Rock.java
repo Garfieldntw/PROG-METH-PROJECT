@@ -1,6 +1,7 @@
-package weapon;
+package item.weapon;
 
 import javafx.scene.image.Image;
+import javafx.scene.control.skin.TextInputControlSkin.Direction;
 import logic.GameController;
 import logic.Player.Player;
 
@@ -13,8 +14,14 @@ public class Rock extends Weapon{
 		super(durability);
 	}
 	@Override
-	public void useWeapon(double xPos, double yPos, int dirLR, int dirUD) {
-		System.out.println("use rock");
+	public void useWeapon(double xPos, double yPos, Direction direction) {
+		int dirLR = 0; int dirUD = 0;
+		switch (direction) {
+			case Direction.UP -> dirUD = -1;
+			case Direction.DOWN -> dirUD = 1;
+			case Direction.RIGHT -> dirLR = 1;
+			case Direction.LEFT -> dirLR = -1;
+		}
 		GameController.getWeaponCanvas().ThrowRock(xPos + 50*dirLR, yPos + 50*dirUD, dirLR, dirUD, GameController.getWeaponCanvas().getGraphicsContext2D());
 		this.setDurability(getDurability() - 1);
 	}

@@ -1,13 +1,16 @@
 package logic.Player;
 
 import java.util.ArrayList;
+
+import item.weapon.*;
+import item.*;
 import logic.GameController;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.skin.TextInputControlSkin.Direction;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
-import weapon.*;
 
 public class Player {
 	//player attributes
@@ -16,12 +19,13 @@ public class Player {
 	private double yPosition;
 	private int health = 1;
 	private int speed = 3;
-	
+	private int bombPower;
+	private Color color;
 	//player logic
 	private boolean isInvincible = false;
 	private boolean isDead = false;
 	private boolean isBombPlaced = false;
-	
+	private Direction direction;
 	//weapon
 	private Weapon holdedWeapon;
 	
@@ -32,11 +36,13 @@ public class Player {
 	// add final ArrayList<E> when finished
 	private ArrayList<Image> PlayerImage;
 
-	public Player(String name, double SpawnXPos, double SpawnYPos, int health) {
+	public Player(String name, double SpawnXPos, double SpawnYPos, int health, Direction direction) {
 		this.name = name;
 		this.xPosition = SpawnXPos;
 		this.yPosition = SpawnYPos;
 		this.health = health;
+		this.direction = direction;
+		setColor();
 		// this.setHoldedWeapon(new Rock(20, this));
 		this.setHoldedWeapon(new Shovel(100, this));
 		// this.setHoldedWeapon(new NoWeapon(1, this));
@@ -47,6 +53,14 @@ public class Player {
 		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteLeft.png").toExternalForm()));
 		PlayerImage.add(new Image(getClass().getResource("/PlayerSpriteRight.png").toExternalForm()));
 		placeBomb();
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
 	}
 
 	public void move(int dirLR, int dirUD) {
@@ -134,10 +148,17 @@ public class Player {
 	public void setDead(boolean isDead) {
 		this.isDead = isDead;
 		if (isDead) {
-			Platform.runLater(() -> GameController.setGameEnded(true, this));
+			Platform.runLater(() -> GameController.setGameEndWithWinner(true, this));
 		}
 	}
-
+	
+	public void setColor(){
+		this.color = name.equals("Player 1") ? Color.rgb(255, 102, 102) : Color.LIGHTBLUE;
+	}	
+	
+	public Color getColor(){
+		return this.color;
+	}
 	public Weapon getHoldedWeapon() {
 		return holdedWeapon;
 	}
@@ -166,22 +187,32 @@ public class Player {
 		this.isBombPlaced = isBombPlaced;
 	}
 
-	public void render(GraphicsContext gc, int index) {
+	public void render(GraphicsContext gc) {
 		// TODO Auto-generated method stub
 
 		double triangleWidth = 14;
 		double triangleHeight = 10;
-
 		double centerX = xPosition+22.5;
 		double centerY = yPosition-20; // position above the head
 
 		// Coordinates for an upside-down triangle
 		double[] xPoints = { centerX - triangleWidth / 2, centerX + triangleWidth / 2, centerX };
 		double[] yPoints = { centerY, centerY, centerY + triangleHeight };
-
-		gc.setFill(Color.RED);
+		if(name == "Player 1")gc.setFill(Color.RED);
+		else gc.setFill(Color.BLUE);
+		
 		gc.fillPolygon(xPoints, yPoints, 3);
-		gc.drawImage(PlayerImage.get(index), getxPosition(), getyPosition(), width, height);
+		
+		double aspectRatio = PlayerImage.get(0).getWidth() * height;
+		double targetWidth = aspectRatio / PlayerImage.get(0).getHeight();
+		
+		switch (direction) {
+			case Direction.UP -> gc.drawImage(PlayerImage.get(1), getxPosition()+5, getyPosition(), targetWidth, height);
+			case Direction.DOWN -> gc.drawImage(PlayerImage.get(0), getxPosition()+5, getyPosition(), targetWidth, height);
+			case Direction.RIGHT -> gc.drawImage(PlayerImage.get(3), getxPosition()+5, getyPosition(), targetWidth, height);
+			case Direction.LEFT -> gc.drawImage(PlayerImage.get(2), getxPosition()+5, getyPosition(), targetWidth, height);
+		}
+		
 
 	}
 
@@ -220,6 +251,14 @@ public class Player {
 
 	public void setyPosition(double yPosition) {
 		this.yPosition = yPosition;
+	}
+
+	public int getBombPower() {
+		return bombPower;
+	}
+
+	public void setBombPower(int bombPower) {
+		this.bombPower = bombPower;
 	}
 
 }

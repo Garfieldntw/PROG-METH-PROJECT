@@ -1,7 +1,7 @@
-package weapon;
+package item.weapon;
 import logic.Player.*;
+import javafx.scene.control.skin.TextInputControlSkin.Direction;
 import javafx.scene.image.Image;
-import weapon.Weapon;
 public class NoWeapon extends Weapon{
 	private final Image fistImage = new Image(getClass().getResource("/bulletImage.png").toExternalForm());;
 	public NoWeapon(int durability, Player p) {
@@ -16,7 +16,7 @@ public class NoWeapon extends Weapon{
 		return fistImage;
 	}
 	
-	public void useWeapon(double xPos, double yPos, int dirLR, int dirUD) {
+	public void useWeapon(double xPos, double yPos, Direction direction) {
 		System.out.println(this.getP().getName() + " don't have any weapon");
 	}
 	

@@ -1,9 +1,11 @@
-package weapon;
+package item.weapon;
 
-import javafx.scene.image.Image;
-import logic.Player.Player;
-
-public abstract class Weapon {
+import item.Item;
+import javafx.scene.control.skin.TextInputControlSkin.Direction;
+import logic.GameController;
+import logic.Player.*;
+import logic.GameLogic;
+public abstract class Weapon extends Item{
 	private int durability;
 	private Player p;
 	public Weapon(int durability, Player p) {
@@ -19,7 +21,7 @@ public abstract class Weapon {
 	public void setP(Player p) {
 		this.p = p;
 	}
-	public abstract void useWeapon(double Xpos, double yPos, int dirLR, int dirUD);
+	public abstract void useWeapon(double Xpos, double yPos, Direction direction);
 	
 	public int getDurability() {
 		return durability;
@@ -33,5 +35,11 @@ public abstract class Weapon {
 	protected void broke() {
 		p.setHoldedWeapon(new NoWeapon(1, p));;
 	}
-	public abstract Image getImage();
+	
+	@Override
+	public void getPickedUp(Player p) {
+		this.setP(p);
+		p.setHoldedWeapon(this);
+		GameLogic.updateWeapon();
+	}
 }

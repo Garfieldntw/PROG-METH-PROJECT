@@ -4,14 +4,18 @@ import Interface.*;
 import javafx.scene.image.Image;
 import logic.GameLogic;
 
-public class Lettuce extends BlockObject implements Breakable {
+public class NormalObject extends BlockObject implements Breakable {
 	// Source ภาพ
 
-	private final Image LettuceImage = new Image(getClass().getResource("/CabbageImage.png").toExternalForm());
+	private final Image[] NormalObjectImage = {
+			new Image(getClass().getResource("/CabbageImage.png").toExternalForm()),
+			new Image(getClass().getResource("/PurpleCabbageImage.png").toExternalForm()),
+			//new Image(getClass().getResource("").toExternalForm())
+	};
 
 	private Boolean isBreak;
 
-	public Lettuce(int xPosition, int yPosition) {
+	public NormalObject(int xPosition, int yPosition) {
 		super(xPosition, yPosition);
 		this.setBreak(false);
 		// TODO Auto-generated constructor stub
@@ -30,8 +34,8 @@ public class Lettuce extends BlockObject implements Breakable {
 	}
 
 	@Override
-	public Image getImage() {
+	public Image getImage(int index) {
 		// TODO Auto-generated method stub
-		return LettuceImage;
+		return NormalObjectImage[index];
 	}
 }

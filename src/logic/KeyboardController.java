@@ -1,5 +1,9 @@
 package logic;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -10,14 +14,14 @@ public class KeyboardController {
 	private boolean p1LeftPressed = false;
 	private boolean p1RightPressed = false;
 	private boolean p1BombPressed = false;
-	private boolean p1weaponPressed = false;
+	private boolean p1WeaponPressed = false;
 	private boolean p2UpPressed = false;
 	private boolean p2DownPressed = false;
 	private boolean p2LeftPressed = false;
 	private boolean p2RightPressed = false;
 	private boolean p2BombPressed = false;
-	private boolean p2weaponPressed = false;
-
+	private boolean p2WeaponPressed = false;
+	private Set<KeyCode> pressedKeys = new HashSet<>();
 
 	public KeyboardController() {
 		keyboardSetup();
@@ -27,6 +31,14 @@ public class KeyboardController {
 		GameController.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
+				KeyCode code = e.getCode();
+				if (!pressedKeys.contains(code)) {
+					pressedKeys.add(code);
+					if (e.getCode() == KeyCode.SHIFT)
+						setP1WeaponPressed(true);
+					if (e.getCode() == KeyCode.DIGIT1)
+						setP2WeaponPressed(true);
+				}
 				if (e.getCode() == KeyCode.W)
 					setP1UpPressed(true);
 				if (e.getCode() == KeyCode.S)
@@ -37,8 +49,6 @@ public class KeyboardController {
 					setP1RightPressed(true);
 				if (e.getCode() == KeyCode.SPACE)
 					setP1BombPressed(true);
-				if (e.getCode() == KeyCode.SHIFT)
-					setP1weaponPressed(true);
 
 				if (e.getCode() == KeyCode.UP)
 					setP2UpPressed(true);
@@ -50,39 +60,41 @@ public class KeyboardController {
 					setP2RightPressed(true);
 				if (e.getCode() == KeyCode.ENTER)
 					setP2BombPressed(true);
-				if (e.getCode() == KeyCode.DIGIT1)
-					setP2weaponPressed(true);
+
 			}
 		});
 		GameController.getScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
-					if (e.getCode() == KeyCode.W)
-						setP1UpPressed(false);
-					if (e.getCode() == KeyCode.S)
-						setP1DownPressed(false);
-					if (e.getCode() == KeyCode.A)
-						setP1LeftPressed(false);
-					if (e.getCode() == KeyCode.D)
-						setP1RightPressed(false);
-					if (e.getCode() == KeyCode.SPACE)
-						setP1BombPressed(false);
-					if (e.getCode() == KeyCode.SHIFT)
-						setP1weaponPressed(false);
-
-					if (e.getCode() == KeyCode.UP)
-						setP2UpPressed(false);
-					if (e.getCode() == KeyCode.DOWN)
-						setP2DownPressed(false);
-					if (e.getCode() == KeyCode.LEFT)
-						setP2LeftPressed(false);
-					if (e.getCode() == KeyCode.RIGHT)
-						setP2RightPressed(false);
-					if (e.getCode() == KeyCode.ENTER)
-						setP2BombPressed(false);
-					if (e.getCode() == KeyCode.DIGIT1)
-						setP2weaponPressed(false);
 				
+				pressedKeys.remove(e.getCode());
+				
+				if (e.getCode() == KeyCode.W)
+					setP1UpPressed(false);
+				if (e.getCode() == KeyCode.S)
+					setP1DownPressed(false);
+				if (e.getCode() == KeyCode.A)
+					setP1LeftPressed(false);
+				if (e.getCode() == KeyCode.D)
+					setP1RightPressed(false);
+				if (e.getCode() == KeyCode.SPACE)
+					setP1BombPressed(false);
+				if (e.getCode() == KeyCode.SHIFT)
+					setP1WeaponPressed(false);
+
+				if (e.getCode() == KeyCode.UP)
+					setP2UpPressed(false);
+				if (e.getCode() == KeyCode.DOWN)
+					setP2DownPressed(false);
+				if (e.getCode() == KeyCode.LEFT)
+					setP2LeftPressed(false);
+				if (e.getCode() == KeyCode.RIGHT)
+					setP2RightPressed(false);
+				if (e.getCode() == KeyCode.ENTER)
+					setP2BombPressed(false);
+				if (e.getCode() == KeyCode.DIGIT1)
+					setP2WeaponPressed(false);
+
 			}
 		});
 	}
@@ -126,13 +138,13 @@ public class KeyboardController {
 	public void setP1BombPressed(boolean p1BombPressed) {
 		this.p1BombPressed = p1BombPressed;
 	}
-	
-	public void setP1weaponPressed(boolean p1weaponPressed) {
-		this.p1weaponPressed = p1weaponPressed;
+
+	public void setP1WeaponPressed(boolean p1weaponPressed) {
+		this.p1WeaponPressed = p1weaponPressed;
 	}
-	
-	public boolean isP1weaponPressed() {
-		return p1weaponPressed;
+
+	public boolean isP1WeaponPressed() {
+		return p1WeaponPressed;
 	}
 
 	public boolean isP2UpPressed() {
@@ -175,12 +187,12 @@ public class KeyboardController {
 		this.p2BombPressed = p2BombPressed;
 	}
 
-	public void setP2weaponPressed(boolean p2weaponPressed) {
-		this.p2weaponPressed = p2weaponPressed;
+	public void setP2WeaponPressed(boolean p2weaponPressed) {
+		this.p2WeaponPressed = p2weaponPressed;
 	}
-	
-	public boolean isP2weaponPressed() {
-		return p2weaponPressed;
+
+	public boolean isP2WeaponPressed() {
+		return p2WeaponPressed;
 	}
 
 }

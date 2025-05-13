@@ -1,6 +1,7 @@
 package logic.Component.GameScenes;
 
 import javafx.geometry.Insets;
+
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -12,8 +13,7 @@ import javafx.scene.paint.Color;
 import logic.GameLogic;
 import object.Floor;
 import object.BlockObject;
-import weapon.Weapon;
-
+import item.weapon.*;
 public class EachPane extends Pane{
 	private BlockObject Object;
 	private int xPosition;
@@ -27,12 +27,12 @@ public class EachPane extends Pane{
 	private final int PANE_HEIGHT = 50;
 	
 	
-	public EachPane(BlockObject Object, int xPosition, int yPosition) {
+	public EachPane(BlockObject Object, int xPosition, int yPosition, int index) {
 		this.setObject(Object);
 		this.setxPosition(xPosition);
 		this.setyPosition(yPosition);
 		this.setMinSize(PANE_WIDTH, PANE_HEIGHT);
-		this.drawcell(this.getObject().getImage());
+		this.drawcell(this.getObject().getImage(index));
 		//this.setStyle("-fx-background-color: lightblue; -fx-background-radius: 20;");
 	}
 	
@@ -41,7 +41,6 @@ public class EachPane extends Pane{
 			BackgroundFill bgFill = new BackgroundFill(basecolor, CornerRadii.EMPTY, Insets.EMPTY);
 			BackgroundFill[] bgFillA = {bgFill};
 
-			
 			BackgroundSize bgSize = new BackgroundSize(50,50,false,false,false,false);
 			BackgroundImage bgImg = new BackgroundImage(image, null, null, null, bgSize);
 

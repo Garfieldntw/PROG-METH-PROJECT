@@ -2,7 +2,7 @@ package object;
 
 import javafx.scene.image.Image;
 
-public class BlockObject {
+public abstract class BlockObject {
 	private int xPosition;
 	private int yPosition;
 	
@@ -24,8 +24,6 @@ public class BlockObject {
 		this.yPosition = yPosition;
 	}
 	
-	public Image getImage() {
-		return null;
-	}
+	public abstract Image getImage(int index);
 
 }

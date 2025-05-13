@@ -10,7 +10,7 @@ public class GamePane extends StackPane {
 	private WeaponCanvas weaponCanvas;
 	private DropCanvas dropCanvas = new DropCanvas();
 
-	public GamePane(LayoutPane layoutPane, PlayerCanvas playerCanvas,WeaponCanvas weaponCanvas) {
+	public GamePane(LayoutPane layoutPane, PlayerCanvas playerCanvas,WeaponCanvas weaponCanvas,DropCanvas dropCanvas) {
 		super();
 		this.layoutPane = layoutPane;
 		this.playerCanvas = playerCanvas;
@@ -48,8 +48,5 @@ public class GamePane extends StackPane {
 		this.weaponCanvas = weaponCanvas;
 	}
 	
-	
-	public DropCanvas getDropCanvas() {
-		return dropCanvas;
-	}
+
 }

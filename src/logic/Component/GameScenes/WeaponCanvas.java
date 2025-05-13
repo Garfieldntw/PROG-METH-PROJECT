@@ -2,39 +2,49 @@ package logic.Component.GameScenes;
 
 import java.util.ArrayList;
 
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.skin.TextInputControlSkin.Direction;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import logic.GameController;
 import logic.GameLogic;
 import logic.Player.Player;
 import object.Floor;
-import object.Lettuce;
-import weapon.Shovel;
-import weapon.Weapon;
+import object.NormalObject;
+import item.weapon.*;
 
 public class WeaponCanvas extends Canvas {
-	private int bombpower = 1;
 	private final ArrayList<Image> bombImage;
 	private final Image RockImage = new Image(getClass().getResource("/rockImage.png").toExternalForm());
-
+	private final AudioClip throwingSound = new AudioClip(ClassLoader.getSystemResource("throwing.wav").toString());
+	private final AudioClip bombSound = new AudioClip(ClassLoader.getSystemResource("bombticking.wav").toString());
+	private final AudioClip explodeSound = new AudioClip(ClassLoader.getSystemResource("explosion.wav").toString()); 
+	private final AudioClip shovelSound = new AudioClip(ClassLoader.getSystemResource("shovelDig.wav").toString()); 
+	
 	public WeaponCanvas(double width, double height) {
 		super(width, height);
 		this.bombImage = new ArrayList<>();
 		bombImage.add(new Image(getClass().getResource("/bombImage1.png").toExternalForm()));
 		bombImage.add(new Image(getClass().getResource("/bombImage2.png").toExternalForm()));
 		bombImage.add(new Image(getClass().getResource("/bombImage3.png").toExternalForm()));
+		throwingSound.setVolume(0.5);
+		bombSound.setVolume(0.5);
+		explodeSound.setVolume(0.5);
+		shovelSound.setVolume(0.5);
 		// Add player health, spawnpoint
 	}
 
 	public void Drawbomb(Player p, GraphicsContext gc) {
 		double xPos = GameLogic.getxPaneNumOfPlayer(p) * 50;
 		double yPos = GameLogic.getyPaneNumOfPlayer(p) * 50;
-
+		// if (soundIsOn)
+		bombSound.play();
 		new Thread(() -> {
 			try {
 				Platform.runLater(() -> gc.drawImage(bombImage.get(0), xPos, yPos, 50, 50));
@@ -48,14 +58,15 @@ public class WeaponCanvas extends Canvas {
 			}
 			Platform.runLater(() -> {
 			gc.clearRect(xPos, yPos, 50, 50);
-			FirstExplode(xPos, yPos, gc);
+			FirstExplode(p, xPos, yPos, gc);
 			});
 			
 		}).start();
 	}
 
-	public void FirstExplode(double xPos, double yPos, GraphicsContext gc) {
-
+	public void FirstExplode(Player p, double xPos, double yPos, GraphicsContext gc) {
+		//
+		explodeSound.play();
 		new Thread(() -> {
 
 			Platform.runLater(() -> {
@@ -70,11 +81,11 @@ public class WeaponCanvas extends Canvas {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			Platform.runLater(() -> SecondExplode(xPos, yPos, gc));
+			Platform.runLater(() -> SecondExplode(p, xPos, yPos, gc));
 		}).start();
 	}
 
-	public void SecondExplode(double xPos, double yPos, GraphicsContext gc) {
+	public void SecondExplode(Player p, double xPos, double yPos, GraphicsContext gc) {
 
 		new Thread(() -> {
 			ArrayList<Double> size = new ArrayList<>();
@@ -89,7 +100,7 @@ public class WeaponCanvas extends Canvas {
 			next.add(true);
 			int realsize = 0;
 
-			while (realsize < bombpower * 50) {
+			while (realsize < p.getBombPower() * 50) {
 				if (GameLogic.getPaneFromXY(xPos - (size.get(0) + 12.5), yPos).getObject() instanceof Floor
 						&& next.get(0)) {
 					size.set(0, size.get(0) + 25);
@@ -133,19 +144,13 @@ public class WeaponCanvas extends Canvas {
 								size.get(2) + size.get(3) + 50))
 					GameController.getPlayerCanvas().getP1().getHurt();
 
-				if (GameLogic.collide(GameController.getPlayerCanvas().getP1(), xPos - size.get(0), yPos,
-						size.get(0) + size.get(1) + 50, 50)
-						|| GameLogic.collide(GameController.getPlayerCanvas().getP1(), xPos, yPos - size.get(2), 50,
-								size.get(2) + size.get(3) + 50))
-					GameController.getPlayerCanvas().getP1().getHurt();
-
 				if (GameLogic.collide(GameController.getPlayerCanvas().getP2(), xPos - size.get(0), yPos,
 						size.get(0) + size.get(1) + 50, 50)
 						|| GameLogic.collide(GameController.getPlayerCanvas().getP2(), xPos, yPos - size.get(2), 50,
 								size.get(2) + size.get(3) + 50))
 					GameController.getPlayerCanvas().getP2().getHurt();
 
-				realsize += 50;
+				realsize += 25;
 				try {
 					Thread.sleep(30);
 				} catch (InterruptedException e) {
@@ -160,8 +165,8 @@ public class WeaponCanvas extends Canvas {
 				e.printStackTrace();
 			}
 			Platform.runLater(() -> {
-			gc.clearRect(xPos - bombpower * 50, yPos, bombpower * 50 + 50 + bombpower * 50, 50);
-			gc.clearRect(xPos, yPos - bombpower * 50, 50, bombpower * 50 + 50 + bombpower * 50);
+			gc.clearRect(xPos - p.getBombPower() * 50, yPos, p.getBombPower() * 50 + 50 + p.getBombPower() * 50, 50);
+			gc.clearRect(xPos, yPos - p.getBombPower() * 50, 50, p.getBombPower() * 50 + 50 + p.getBombPower() * 50);
 			});
 		}).start();
 	}
@@ -238,16 +243,14 @@ public class WeaponCanvas extends Canvas {
 				x += 1;
 			}
 			gc.clearRect(xPos, yPos, 50, 50);
-			this.FirstExplode(xPos, yPos, gc);
+			this.FirstExplode(p, xPos, yPos, gc);
 		}).start();
 	}
 
-	public int getBombpower() {
-		// TODO Auto-generated method stub
-		return bombpower;
-	}
-
 	public void drawShovel(Player p, double xpos, double yPos, int dirLR, int dirUD, GraphicsContext gc) {
+		// if (soundIsOn)
+		//d
+		shovelSound.play();
 		new Thread(() -> {
 			int angleInit = -45;
 			if (p.equals(GameController.getPlayerCanvas().getP2()))
@@ -323,12 +326,69 @@ public class WeaponCanvas extends Canvas {
 
 		}).start();
 	}
+	
+	public void playShovelSlashThread(GraphicsContext gc, Image shovelImage, double startX, double startY, Direction direction) {
+	    // Initialize animation parameters
+	    double maxSteps = 10;
+	    double startAngle;
+	    switch (direction) {
+	        case Direction.UP : startAngle = -90; GameLogic.breakbyPosition(startX, startY - 50);
+	        case Direction.RIGHT : startAngle = 0; GameLogic.breakbyPosition(startX + 50, startY);
+	        case Direction.DOWN : startAngle = 90; GameLogic.breakbyPosition(startX, startY + 50);
+	        case Direction.LEFT : startAngle = 180; GameLogic.breakbyPosition(startX - 50, startY);
+	        default : startAngle = 0;
+	    }
+	    Platform.runLater(() -> GameLogic.breakbyPosition(startX, startY));
+	    final double finalStartAngle = startAngle;
+	    final double[] currentStep = {0}; // Store current step (frame of animation)
 
+	    // AnimationTimer to handle frame-by-frame updates
+	    AnimationTimer timer = new AnimationTimer() {
+	        @Override
+	        public void handle(long now) {
+	            if (currentStep[0] < maxSteps) {
+	                // Calculate the angle based on the current step
+	                double totalAngle = finalStartAngle + currentStep[0] * 9;
+
+	                // Clear previous frame and draw new one
+	                gc.clearRect(startX - 75, startY - 75, 150, 150);
+	                gc.save();
+	                gc.translate(startX, startY);
+	                gc.rotate(totalAngle);
+	                gc.drawImage(shovelImage, 0, -25, 50, 50); // Adjust if necessary
+	                gc.restore();
+
+	                // Increment the step
+	                currentStep[0]++;
+	            } else {
+	                // Stop the animation when max steps are reached
+	                stop();
+	                // Final clear after animation
+	                gc.clearRect(startX - 75, startY - 75, 150, 150);
+	            }
+	        }
+	    };
+
+	    // Start the animation
+	    timer.start();
+	}
+
+	
+	private void drawRotateShovel(double startAngle, GraphicsContext gc, Image shovelImage, int state, double startX, double startY) {
+		gc.clearRect(startX - 50, startY - 50, 150, 150);	
+		gc.save();
+        gc.translate(startX, startY);
+        gc.rotate(startAngle + 9*state);   
+        gc.drawImage(shovelImage, 0, 0, 50, 50); 
+        gc.restore();
+	}
+	
 	public void ThrowRock(double xPos, double yPos, int dirLR, int dirUD, GraphicsContext gc) {
     final double speed = 4;
     final double[] rockX = {xPos};
     final double[] rockY = {yPos};
-
+    // if (soundIsOn)
+	throwingSound.play();
     AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long now) {
@@ -372,13 +432,5 @@ public class WeaponCanvas extends Canvas {
     };
 
     Platform.runLater(timer::start);
-	}
-
-	public int getBombpower1() {
-		return bombpower;
-	}
-
-	public void setBombpower(int bombpower) {
-		this.bombpower = bombpower;
 	}
 }

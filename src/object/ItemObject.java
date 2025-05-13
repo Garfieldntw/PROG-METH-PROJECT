@@ -4,13 +4,17 @@ import Interface.Breakable;
 import javafx.scene.image.Image;
 import logic.GameLogic;
 
-public class Purple_Cabbage extends BlockObject implements Breakable{
+public class ItemObject extends BlockObject implements Breakable{
 
-	private final Image purpleCabbageImage = new Image(getClass().getResource("/purplecabbage.png").toExternalForm());
+	private final Image[] ItemObjectImage = {
+			new Image(getClass().getResource("/CucumberImage.png").toExternalForm()),
+			new Image(getClass().getResource("/AvocadoImage.png").toExternalForm()),
+			//new Image(getClass().getResource("").toExternalForm())
+	};
 
 	private Boolean isBreak;
 
-	public Purple_Cabbage(int xPosition, int yPosition) {
+	public ItemObject(int xPosition, int yPosition) {
 		super(xPosition, yPosition);
 		this.setBreak(false);
 		// TODO Auto-generated constructor stub
@@ -29,8 +33,8 @@ public class Purple_Cabbage extends BlockObject implements Breakable{
 	}
 
 	@Override
-	public Image getImage() {
+	public Image getImage(int index) {
 		// TODO Auto-generated method stub
-		return purpleCabbageImage;
+		return ItemObjectImage[index];
 	}
 }

@@ -9,7 +9,9 @@ public class Floor extends BlockObject{
 		super(xPosition, yPosition);
 		// TODO Auto-generated constructor stub
 	}
-	public Image getImage() {
+
+	public Image getImage(int index) {
+		// TODO Auto-generated method stub
 		return FloorImage;
 	}
 }

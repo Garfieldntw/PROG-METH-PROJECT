@@ -15,7 +15,7 @@ public class Main extends Application{
 		//Scene scene = new Scene(menuPane);
 		
 		GameController.setupScene();
-		primaryStage.setTitle("game demo");
+		primaryStage.setTitle("Salad Smash!");
 		primaryStage.setScene(GameController.getScene());
 		primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
