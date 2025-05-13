@@ -17,6 +17,7 @@ import logic.Component.GameScenes.LayoutPane;
 import logic.Component.GameScenes.WeaponCanvas;
 import logic.Component.GameScenes.BottomBar.StatusPane;
 import logic.Component.MainMenu.MainMenuPane;
+import logic.Component.MainMenu.MapSelectorPane;
 import logic.Player.Player;
 import item.*;
 import item.buff.*;
@@ -33,6 +34,7 @@ import object.*;
 public class GameController {
 
 	private static MainMenuPane menuPane;
+	private static MapSelectorPane mapSelectorPane;
 	private static PlayerCanvas playerCanvas;
 	private static WeaponCanvas weaponCanvas;
 	private static ArrayList<ArrayList<Integer>> epList = new ArrayList<>();
@@ -45,67 +47,79 @@ public class GameController {
 	private static Scene scene;
 	private static boolean isGameEnded;
 	private static int mapNum;
+	private static final Image[] TextureImage = {new Image(GameController.class.getResource("/green floor.png").toExternalForm(),true),
+			new Image(GameController.class.getResource("/woodTexture.png").toExternalForm(),true),
+			new Image(GameController.class.getResource("/dirtFloor.png").toExternalForm(),true)
+	};
 
 
-	public static void setupScene() {
-		setmapNum(0);
+	public static void setupScene() {	
 		// set Vbox
 		root = new VBox();
 		root.setFocusTraversable(true);
 		root.setAlignment(Pos.CENTER);
 		root.setPadding(Insets.EMPTY);
 		scene = new Scene(root, 850, 630); // scene size
-		createMap();
-
 		// initiating
-		dropCanvas = new DropCanvas();
 		isGameEnded = false;
-		keyboardController = new KeyboardController();
-		layoutPane = new LayoutPane(epList, mapNum);
-
-		playerCanvas = new PlayerCanvas(17 * 50, 9 * 50);
-		weaponCanvas = new WeaponCanvas(850, 450);
-		statusPane = new StatusPane();
-		gamePane = new GamePane(layoutPane, playerCanvas, weaponCanvas, dropCanvas);
-
 		menuPane = new MainMenuPane();
-
 		root.getChildren().addAll(menuPane);
 
 	}
 
+	public static void toMainmenuScene() {
+		root.getChildren().clear();
+		root.getChildren().add(menuPane);
+	}
+	
+	public static void toMapSelectorScene() {
+		mapSelectorPane = new MapSelectorPane();
+		root.getChildren().clear();
+		root.getChildren().add(mapSelectorPane);
+	}
+	
+	public static void toGameScene() {
+		createMap();
+		dropCanvas = new DropCanvas();
+		keyboardController = new KeyboardController();
+		System.out.println("this map = " + mapNum);
+		layoutPane = new LayoutPane(epList, mapNum);
+		playerCanvas = new PlayerCanvas(17 * 50, 9 * 50);
+		weaponCanvas = new WeaponCanvas(850, 450);
+		statusPane = new StatusPane();
+		gamePane = new GamePane(layoutPane, playerCanvas, weaponCanvas, dropCanvas);
+		root.getChildren().clear();
+		root.getChildren().addAll(gamePane, statusPane);
+	}
+	
 	public static void setGameEndWithWinner(boolean isGameEnded, Player player) {
 		GameController.isGameEnded = isGameEnded;
 		Player winner = playerCanvas.getP1();
 		if (player.getName().equals("Player 1"))
 			winner = playerCanvas.getP2();
 		GameOverPane gameOverPane = new GameOverPane(winner.getName() + " Wins!", winner.getPlayerImage().get(0), player.getColor());
-
-		GametoGameOverScene(gameOverPane);
+		toGameOverScene(gameOverPane);
 	}
 
 	public static void setGameEnded(boolean isGameEnded) {
 		GameController.isGameEnded = isGameEnded;
 		Image drawImage = new Image(GameController.class.getResource("/drawImage.png").toExternalForm());
 		GameOverPane gameOverPane = new GameOverPane("Draw!", drawImage, Color.GRAY);
-
-		GametoGameOverScene(gameOverPane);
+		toGameOverScene(gameOverPane);
 	}
 
-	public static void mainToGameScene() {
-		root.getChildren().clear();
-		root.getChildren().addAll(gamePane, statusPane);
-	}
 
-	public static void GametoGameOverScene(GameOverPane gameOverPane) {
+	public static void toGameOverScene(GameOverPane gameOverPane) {
 		root.getChildren().clear();
 		root.getChildren().add(gameOverPane);
 
 	}
 
-	public static void GameOvertoMainmenuScene() {
-		root.getChildren().clear();
-		root.getChildren().add(menuPane);
+	public static void createMap() {
+		// MapReader mapreader = new MapReader("/Map1.txt");
+		String Path = "/Map" + (mapNum + 1) + ".txt";
+		MapReader mapreader = new MapReader(Path);
+		epList = mapreader.getMapint();
 	}
 
 	public static MainMenuPane getMenuPane() {
@@ -201,44 +215,15 @@ public class GameController {
 	}
 	//
 
-	public static void createMap() {
-		// MapReader mapreader = new MapReader("/Map1.txt");
-		MapReader mapreader = new MapReader("/Map4.txt");
-		epList = mapreader.getMapint();
-
-		// map creation
-		// ArrayList<Integer> xSpawnPoints = new ArrayList<>(Arrays.asList(1, 15));
-		// ArrayList<Integer> ySpawnPoints = new ArrayList<>(Arrays.asList(3, 4, 5));
-
-		// for (int y = 0; y < 9; y++) {
-		// ArrayList<EachPane> row = new ArrayList<>();
-		// for (int x = 0; x < 17; x++) {
-		// if (y == 0 || y == 8 || x == 0 || x == 16 || (y % 2 == 0 && x % 2 == 0 && !(y
-		// == 4 && x == 8))) {
-		// row.add(new EachPane(new Carrot(x, y), x, y));
-		// } else if (xSpawnPoints.contains(x) && ySpawnPoints.contains(y)) {
-		// row.add(new EachPane(new Floor(x, y), x, y));
-		// } else {
-		// Random random = new Random();
-		// if (random.nextInt(100) < 80) {
-		// if (random.nextInt(100) < 85)
-		// row.add(new EachPane(new Lettuce(x, y), x, y));
-		// else
-		// row.add(new EachPane(new Purple_Cabbage(x, y), x, y));
-		// } else {
-		// row.add(new EachPane(new Floor(x, y), x, y));
-		// }
-		// }
-		// }
-		// epList.add(row);
-		// }
-	}
-
 	public static int getMapnum() {
 		return mapNum;
 	}
 
 	public static void setmapNum(int mapnum) {
-		mapNum = mapnum;
+		GameController.mapNum = mapnum;
+	}
+	
+	public static Image[] getTextureImage() {
+		return TextureImage;
 	}
 }

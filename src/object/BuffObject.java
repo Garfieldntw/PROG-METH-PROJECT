@@ -6,9 +6,9 @@ import logic.*;
 
 public class BuffObject extends BlockObject implements Breakable{
 	private final Image[] BuffObjectImage = {
-			new Image(getClass().getResource("/ChiliImage.png").toExternalForm()),
-			new Image(getClass().getResource("/OnionImage.png").toExternalForm()),
-			//new Image(getClass().getResource("/BellPepperImage.png").toExternalForm())
+			new Image(getClass().getResource("/ChiliImage.png").toExternalForm(),true),
+			new Image(getClass().getResource("/OnionImage.png").toExternalForm(),true),
+			new Image(getClass().getResource("/BellPepperImage.png").toExternalForm(),true)
 	};
 	public BuffObject(int xPosition, int yPosition) {
 		super(xPosition, yPosition);

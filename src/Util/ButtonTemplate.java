@@ -13,11 +13,13 @@ public class ButtonTemplate extends Button{
 	private final AudioClip clickSound = new AudioClip(getClass().getClassLoader().getResource("click.wav").toString());
 	
 	public ButtonTemplate(Text text){
-		hoverSound.setVolume(0.5);
-		clickSound.setVolume(0.5);
+		hoverSound.setVolume(0.3);
+		clickSound.setVolume(0.3);
+		
 		this.setGraphic(text);
-		this.setFont(Font.font("Monospaced", FontWeight.BOLD, 24));
-		this.setTextFill(Color.web("#fcecd1"));
+		text.setFont(Font.font("Monospaced", FontWeight.BOLD, 24));
+		text.setFill(Color.web("#fcecd1"));
+		
 		BackgroundFill backgroundFill = new BackgroundFill(Color.web("#d8725e"), new CornerRadii(10), Insets.EMPTY);
 		this.setBackground(new Background(backgroundFill));
 		BorderStroke borderStroke = new BorderStroke(Color.web("#fcecd1"), BorderStrokeStyle.SOLID, new CornerRadii(10),

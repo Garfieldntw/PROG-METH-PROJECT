@@ -1,13 +1,23 @@
 package logic.Component.GameScenes;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
-import object.*;
 
+import object.*;
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import logic.GameController;
 
 public class LayoutPane extends GridPane{
@@ -30,15 +40,17 @@ public class LayoutPane extends GridPane{
 		for (int i = 0; i < 9; i++) {
 		    List<EachPane> row = new ArrayList<>();
 		    for (int j = 0; j < 17; j++) {
-		        row.add(new EachPane(new Floor(i, j), i, j, mapNum)); // or whatever constructor is appropriate
+		        row.add(null); // or whatever constructor is appropriate
 		    }
 		    map.add((ArrayList<EachPane>) row);
 		}
+		drawBackground();
 		initializePane();
 	}
 
 	private void initializePane() {
 		// TODO Auto-generated method stub
+		System.out.println("create map " + mapNum);
 		for(int j = 0; j < mapint.size(); j++) {
 			for(int i = 0; i < mapint.get(j).size() ; i++) {
 				switch (mapint.get(j).get(i)) {
@@ -65,11 +77,6 @@ public class LayoutPane extends GridPane{
 				}
 			}
 		}
-		//for(ArrayList<EachPane> row : map) {
-			//for(EachPane eachpane : row) {
-				//this.add(eachpane, eachpane.getxPosition(), eachpane.getyPosition());
-			//}
-		//}
 	}
 	
 	public EachPane GetEachPane(int xPosition, int yPosition) {
@@ -87,4 +94,14 @@ public class LayoutPane extends GridPane{
 	public int getMapHeight() {
 		return mapHeight;
 	}
+	
+	private void drawBackground() {
+		// Load image and define tile size
+		BackgroundSize bgSize = new BackgroundSize(50,50,false,false,false,false);
+		BackgroundImage bgImg = new BackgroundImage(GameController.getTextureImage()[mapNum], BackgroundRepeat.REPEAT, 
+		BackgroundRepeat.REPEAT, null, bgSize);
+		
+		this.setBackground(new Background(bgImg));
+	}
+	
 }

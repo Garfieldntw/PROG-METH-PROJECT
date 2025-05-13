@@ -8,9 +8,9 @@ public class NormalObject extends BlockObject implements Breakable {
 	// Source ภาพ
 
 	private final Image[] NormalObjectImage = {
-			new Image(getClass().getResource("/CabbageImage.png").toExternalForm()),
-			new Image(getClass().getResource("/PurpleCabbageImage.png").toExternalForm()),
-			//new Image(getClass().getResource("").toExternalForm())
+			new Image(getClass().getResource("/CabbageImage.png").toExternalForm(),true),
+			new Image(getClass().getResource("/PurpleCabbageImage.png").toExternalForm(),true),
+			new Image(getClass().getResource("/LettuceImage.png").toExternalForm(),true)
 	};
 
 	private Boolean isBreak;

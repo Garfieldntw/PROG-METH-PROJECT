@@ -18,15 +18,17 @@ import item.weapon.*;
 public class GameLogic {
 
 	private static ArrayList<Weapon> WeaponList = new ArrayList<Weapon>();
+	
 	// add PaneHeight&&number of Row&Column
 	private static double PaneWidth = 50;
 	private static double PaneHeight = 50;
 	private static GamePane gamepane = GameController.getGamePane();
 	private ArrayList<ArrayList<EachPane>> map = gamepane.getLayoutPane().getmap();
 
-	public static void DropWeapon(int xPosition, int yPosition) {
-		// 3 = Shovel, 4 = Rock.
+	public static void dropWeapon(int xPosition, int yPosition) {
 		Random rand = new Random();
+		
+		// shovel and rock have drop rates of 25percent each
 		int randomIndex = rand.nextInt(4);
 		if (randomIndex == 2)
 			GameController.getDropCanvas().Drop(new Shovel(2), xPosition, yPosition,
@@ -34,10 +36,6 @@ public class GameLogic {
 		else if (randomIndex == 3)
 			GameController.getDropCanvas().Drop(new Rock(2), xPosition, yPosition,
 					GameController.getWeaponCanvas().getGraphicsContext2D());
-		// GameController.getGamePane().getDropCanvas().Drop(new Shovel(2), xPosition,
-		// yPosition,
-		// GameController.getWeaponCanvas().getGraphicsContext2D());
-
 	}
 
 	public static void dropBuff(int xPos, int yPos) {
@@ -122,12 +120,12 @@ public class GameLogic {
 		return getyPaneNumOfPlayerTR(p);
 	}
 
-	// --------------------------PLAYER AND OBSTACLE COLLISION
-	// LOGIC----------------------------------------------
+	// --------------------------PLAYER AND OBSTACLE COLLISION LOGIC----------------------------------------------
 	public static boolean HasTopObject(Player p) {
-		// check if player overlaps 2 Pane -> True: check floor on top and topright
-		// -> False: check just floor on top
+		// check if player overlaps 2 Pane	    -> True: check floor on top and topright
+		//									   	-> False: check just floor on top
 		boolean xOverlapped = p.getxPosition() % PaneWidth > 50 - p.getWidth();
+		
 		boolean floorTopRight = (gamepane.getLayoutPane()
 				.GetEachPane(GameLogic.getxPaneNumOfPlayerTR(p) + 1, GameLogic.getyPanefortop(p) - 1)
 				.getObject() instanceof Floor);
@@ -183,16 +181,14 @@ public class GameLogic {
 		return !(floorLeft);
 	}
 
-	// ------------------------------------------------BOMB
-	// LOGIC-----------------------------------------
+	// ------------------------------------------------BOMB LOGIC-----------------------------------------
 
 	public static void DrawBomb(Player p) {
 		// TODO Auto-generated method stub
 		GameController.getWeaponCanvas().Drawbomb(p, GameController.getWeaponCanvas().getGraphicsContext2D());
 	}
 
-	// -----------------------------------------WEAPON, EXPLOSION AND PLAYER
-	// COLLISIONLOGIC-----------------------------
+	// -----------------------------------------WEAPON, EXPLOSION AND PLAYER COLLISIONLOGIC-----------------------------
 
 	// Break all tiles that is breakable in that pane
 	public static void Break(EachPane pane) {
@@ -205,6 +201,7 @@ public class GameLogic {
 				Integer nodeRow = GameController.getLayoutPane().getRowIndex(node);
 				return (nodeCol == null ? 0 : nodeCol) == xPos && (nodeRow == null ? 0 : nodeRow) == yPos;
 			});
+			
 			EachPane newFloor = new EachPane(new Floor(xPos, yPos), xPos, yPos, GameController.getMapnum());
 			GameController.getLayoutPane().getmap().get(yPos).set(xPos, newFloor);
 			GameController.getLayoutPane().add(newFloor, xPos, yPos);

@@ -1,18 +1,23 @@
 package logic.Component.GameScenes;
 
 import javafx.geometry.Insets;
-
+import javafx.geometry.Side;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import logic.GameLogic;
+import logic.*;
 import object.Floor;
 import object.BlockObject;
+
+import java.util.ArrayList;
+
 import item.weapon.*;
 public class EachPane extends Pane{
 	private BlockObject Object;
@@ -20,15 +25,15 @@ public class EachPane extends Pane{
 	private int yPosition;
 	private Color basecolor = Color.web("#488f3d");
 	private Weapon weapondrop;
-	private final Image bombImage1 = new Image(ClassLoader.getSystemResource("bombImage1.png").toString());
-	private final Image bombImage2 = new Image(ClassLoader.getSystemResource("bombImage2.png").toString());
-	private final Image bombImage3 = new Image(ClassLoader.getSystemResource("bombImage3.png").toString());
+	
+	private int Mapnum;
 	private final int PANE_WIDTH = 50;
 	private final int PANE_HEIGHT = 50;
 	
 	
 	public EachPane(BlockObject Object, int xPosition, int yPosition, int index) {
 		this.setObject(Object);
+		this.setMapnum(index);
 		this.setxPosition(xPosition);
 		this.setyPosition(yPosition);
 		this.setMinSize(PANE_WIDTH, PANE_HEIGHT);
@@ -37,20 +42,10 @@ public class EachPane extends Pane{
 	}
 	
 	public void drawcell(Image image) {
-		if(this.getObject() != null) {
-			BackgroundFill bgFill = new BackgroundFill(basecolor, CornerRadii.EMPTY, Insets.EMPTY);
-			BackgroundFill[] bgFillA = {bgFill};
-
+		if(!(this.getObject() instanceof Floor)) {
 			BackgroundSize bgSize = new BackgroundSize(50,50,false,false,false,false);
 			BackgroundImage bgImg = new BackgroundImage(image, null, null, null, bgSize);
-
-			BackgroundImage[] bgImgA = {bgImg};
-			
-			this.setBackground(new Background(bgFillA,bgImgA));
-		}
-		else {
-			BackgroundFill bgFill = new BackgroundFill(basecolor, CornerRadii.EMPTY, Insets.EMPTY);
-			this.setBackground(new Background(bgFill));
+			this.setBackground(new Background(bgImg));
 		}
 	}
 	
@@ -88,5 +83,9 @@ public class EachPane extends Pane{
 	
 	public void Break() {
 		this.setObject(new Floor(this.getxPosition(),this.getyPosition()));
+	}
+	
+	public void setMapnum(int index) {
+		this.Mapnum = index;
 	}
 }

@@ -20,12 +20,12 @@ import javafx.scene.text.Text;
 import logic.GameController;
 
 public class MainMenuPane extends VBox {
-	private final ImageView SOUNDON = new ImageView(new Image(getClass().getResource("/bombImage1.png").toExternalForm()));
-	private final ImageView SOUNDOFF = new ImageView(new Image(getClass().getResource("/bombImage4.png").toExternalForm()));
-	private final ImageView MUSICON = new ImageView(new Image(getClass().getResource("/bombImage3.png").toExternalForm()));
-	private final ImageView MUSICOFF = new ImageView(new Image(getClass().getResource("/bombImage4.png").toExternalForm()));
-	private boolean soundIsOn = true;
-	private boolean musicIsOn = true;
+	private final ImageView SOUNDON = new ImageView(new Image(getClass().getResource("/soundOn.png").toExternalForm()));
+	private final ImageView SOUNDOFF = new ImageView(new Image(getClass().getResource("/soundOff.png").toExternalForm()));
+	private final ImageView MUSICON = new ImageView(new Image(getClass().getResource("/musicOn.png").toExternalForm()));
+	private final ImageView MUSICOFF = new ImageView(new Image(getClass().getResource("/musicOff.png").toExternalForm()));
+	private boolean soundOn = true;
+	private boolean musicOn = true;
 
 	public MainMenuPane() {
 		super();
@@ -47,7 +47,7 @@ public class MainMenuPane extends VBox {
 
 		start.setOnMouseClicked(event -> {
 			((ButtonTemplate) start).getClickSound().play();
-			GameController.mainToGameScene();
+			GameController.toMapSelectorScene();
 		});
 		
 		// how to play button
@@ -60,8 +60,8 @@ public class MainMenuPane extends VBox {
 		Button sound = StyledTogglingButton(SOUNDON);
 		
 		sound.setOnMouseClicked(e -> {
-			soundIsOn = !soundIsOn;
-			if (soundIsOn) {
+			soundOn = !soundOn;
+			if (soundOn) {
 				sound.setGraphic(SOUNDON);
 			} else {
 				sound.setGraphic(SOUNDOFF);
@@ -76,11 +76,11 @@ public class MainMenuPane extends VBox {
 		Media media = new Media(musicPath);
 		MediaPlayer mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
-		mediaPlayer.setVolume(0.05);
+		mediaPlayer.setVolume(0.04);
 		mediaPlayer.play();
 		music.setOnMouseClicked(e -> {
-			musicIsOn = !musicIsOn;
-			if (musicIsOn) {
+			musicOn = !musicOn;
+			if (musicOn) {
 				mediaPlayer.play();
 				music.setGraphic(MUSICON);
 			} else {
@@ -111,6 +111,18 @@ public class MainMenuPane extends VBox {
 		button.setPrefHeight(50);
 		
 		return button;
+	}
+	public boolean isSoundOn() {
+		return soundOn;
+	}
+	public void setSoundOn(boolean soundOn) {
+		this.soundOn = soundOn;
+	}
+	public boolean isMusicOn() {
+		return musicOn;
+	}
+	public void setMusicOn(boolean musicIsOn) {
+		this.musicOn = musicIsOn;
 	}
 	
 }

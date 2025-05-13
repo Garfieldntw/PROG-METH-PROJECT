@@ -21,7 +21,7 @@ import item.weapon.*;
 
 public class WeaponCanvas extends Canvas {
 	private final ArrayList<Image> bombImage;
-	private final Image RockImage = new Image(getClass().getResource("/rockImage.png").toExternalForm());
+	private final Image RockImage = new Image(getClass().getResource("/rockImage.png").toExternalForm(), true);
 	private final AudioClip throwingSound = new AudioClip(ClassLoader.getSystemResource("throwing.wav").toString());
 	private final AudioClip bombSound = new AudioClip(ClassLoader.getSystemResource("bombticking.wav").toString());
 	private final AudioClip explodeSound = new AudioClip(ClassLoader.getSystemResource("explosion.wav").toString()); 
@@ -34,9 +34,9 @@ public class WeaponCanvas extends Canvas {
 		bombImage.add(new Image(getClass().getResource("/bombImage2.png").toExternalForm()));
 		bombImage.add(new Image(getClass().getResource("/bombImage3.png").toExternalForm()));
 		throwingSound.setVolume(0.5);
-		bombSound.setVolume(0.5);
-		explodeSound.setVolume(0.5);
-		shovelSound.setVolume(0.5);
+		bombSound.setVolume(0.1);
+		explodeSound.setVolume(0.1);
+		shovelSound.setVolume(0.2);
 		// Add player health, spawnpoint
 	}
 
@@ -44,7 +44,7 @@ public class WeaponCanvas extends Canvas {
 		double xPos = GameLogic.getxPaneNumOfPlayer(p) * 50;
 		double yPos = GameLogic.getyPaneNumOfPlayer(p) * 50;
 		// if (soundIsOn)
-		bombSound.play();
+		if (GameController.getMenuPane().isSoundOn())  bombSound.play();
 		new Thread(() -> {
 			try {
 				Platform.runLater(() -> gc.drawImage(bombImage.get(0), xPos, yPos, 50, 50));
@@ -66,7 +66,7 @@ public class WeaponCanvas extends Canvas {
 
 	public void FirstExplode(Player p, double xPos, double yPos, GraphicsContext gc) {
 		//
-		explodeSound.play();
+		if (GameController.getMenuPane().isSoundOn())  explodeSound.play();
 		new Thread(() -> {
 
 			Platform.runLater(() -> {
@@ -218,117 +218,11 @@ public class WeaponCanvas extends Canvas {
 		});
 	}
 
-	public void Drawbombbutbetter(Player p, GraphicsContext gc) {
-		double xPos = GameLogic.getxPaneNumOfPlayer(p) * 50;
-		double yPos = GameLogic.getyPaneNumOfPlayer(p) * 50;
-
-		new Thread(() -> {
-			int x = 0;
-			while (x < 100) {
-				gc.clearRect(xPos, yPos, 50, 50);
-				if (x < 33) {
-					gc.drawImage(bombImage.get(x % 3), xPos, yPos, 50, 50);
-				} else if (x < 66) {
-					gc.drawImage(bombImage.get(x % 3), xPos, yPos, 50, 50);
-				} else {
-					gc.drawImage(bombImage.get(x % 3), xPos, yPos, 50, 50);
-
-				}
-				try {
-					Thread.sleep(400 / (1 + (int) (x / 33)) ^ 2);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				x += 1;
-			}
-			gc.clearRect(xPos, yPos, 50, 50);
-			this.FirstExplode(p, xPos, yPos, gc);
-		}).start();
-	}
-
-	public void drawShovel(Player p, double xpos, double yPos, int dirLR, int dirUD, GraphicsContext gc) {
-		// if (soundIsOn)
-		//d
-		shovelSound.play();
-		new Thread(() -> {
-			int angleInit = -45;
-			if (p.equals(GameController.getPlayerCanvas().getP2()))
-				angleInit = 135;
-			if (dirLR == -1)
-				angleInit = 135;
-			else if (dirLR == 1)
-				angleInit = -45;
-			else if (dirUD == 1)
-				angleInit = -135;
-			else if (dirUD == -1)
-				angleInit = 45;
-
-			final int startAngle = angleInit;
-
-			p.setSpeed(0);
-
-			double angle = 0;
-			int steps = 6;
-			int sleepTime = 25;
-
-			// First step
-			for (int i = 0; i < steps; i++) {
-				angle = (i + 1) * 15;
-				double finalAngle = angle;
-				Platform.runLater(() -> {
-					gc.clearRect(xpos - 50, yPos - 50, 150, 150);
-					gc.setFill(Color.rgb(255, 255, 255, 0.9));
-					gc.fillArc(xpos - 30, yPos - 30, 120, 120, startAngle, finalAngle, ArcType.ROUND);
-				});
-				try {
-					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-
-			// break object
-			if (dirLR != 0) {
-				EachPane pane = GameController.getLayoutPane().GetEachPane(GameLogic.getxPaneNumOfPlayer(p) + dirLR,
-						GameLogic.getyPaneNumOfPlayer(p));
-				if (!(pane.getObject() instanceof Floor)) {
-					Platform.runLater(() -> GameLogic.Break(pane));
-				}
-			} else if (dirUD != 0) {
-				EachPane pane = GameController.getLayoutPane().GetEachPane(GameLogic.getxPaneNumOfPlayer(p),
-						GameLogic.getyPaneNumOfPlayer(p) + dirUD);
-				if (!(pane.getObject() instanceof Floor)) {
-					Platform.runLater(() -> GameLogic.Break(pane));
-				}
-			}
-
-			// Second step
-			for (int i = steps - 1; i >= 0; i--) {
-				angle = i * 15;
-				double finalAngle = angle;
-				Platform.runLater(() -> {
-					gc.clearRect(xpos - 50, yPos - 50, 150, 150);
-					gc.setFill(Color.rgb(255, 255, 255, 0.7));
-					gc.fillArc(xpos - 30, yPos - 30, 120, 120, startAngle + 90 - finalAngle, finalAngle, ArcType.ROUND);
-				});
-				try {
-					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-
-			Platform.runLater(() -> {
-				gc.clearRect(xpos, yPos, 120, 120);
-				p.setSpeed(3);
-			});
-
-		}).start();
-	}
+	
 	
 	public void playShovelSlashThread(GraphicsContext gc, Image shovelImage, double startX, double startY, Direction direction) {
 	    // Initialize animation parameters
+		if (GameController.getMenuPane().isSoundOn()) shovelSound.play();
 	    double maxSteps = 10;
 	    double startAngle;
 	    switch (direction) {
@@ -388,7 +282,7 @@ public class WeaponCanvas extends Canvas {
     final double[] rockX = {xPos};
     final double[] rockY = {yPos};
     // if (soundIsOn)
-	throwingSound.play();
+    if (GameController.getMenuPane().isSoundOn()) throwingSound.play();
     AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long now) {

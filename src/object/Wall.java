@@ -7,9 +7,9 @@ import javafx.scene.image.Image;
 public class Wall extends BlockObject{
 	// Source ภาพ
 	private final Image[] WallImage	= {
-			new Image(getClass().getResource("/CarrotImage.png").toExternalForm()),
-			new Image(getClass().getResource("/EggplantImage.png").toExternalForm()),
-			//new Image(getClass().getResource("/BroccoliImage.png").toExternalForm())
+			new Image(getClass().getResource("/CarrotImage.png").toExternalForm(),true),
+			new Image(getClass().getResource("/EggplantImage.png").toExternalForm(),true),
+			new Image(getClass().getResource("/BroccoliImage.png").toExternalForm(),true)
 	};
 	
 	public Wall(int xPosition, int yPosition) {

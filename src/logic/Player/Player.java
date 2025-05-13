@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 import logic.GameLogic;
 
 public class Player {
-	//player attributes
+	// player attributes
 	private String name;
 	private double xPosition;
 	private double yPosition;
@@ -21,15 +21,15 @@ public class Player {
 	private int speed = 3;
 	private int bombPower;
 	private Color color;
-	//player logic
+	// player logic
 	private boolean isInvincible = false;
 	private boolean isDead = false;
 	private boolean isBombPlaced = false;
 	private Direction direction;
-	//weapon
+	// weapon
 	private Weapon holdedWeapon;
-	
-	//set Sprite width and height
+
+	// set Sprite width and height
 	private final double width = 45;
 	private final double height = 45;
 
@@ -85,6 +85,7 @@ public class Player {
 					if ((GameController.getKeyboardController().isP1BombPressed() && getName() == "Player 1")
 							|| (GameController.getKeyboardController().isP2BombPressed() && getName() == "Player 2")) {
 						isBombPlaced = true;
+						
 						// draw bomb
 						GameLogic.DrawBomb(this);
 						isBombPlaced = false;
@@ -151,14 +152,15 @@ public class Player {
 			Platform.runLater(() -> GameController.setGameEndWithWinner(true, this));
 		}
 	}
-	
-	public void setColor(){
+
+	public void setColor() {
 		this.color = name.equals("Player 1") ? Color.rgb(255, 102, 102) : Color.LIGHTBLUE;
-	}	
-	
-	public Color getColor(){
+	}
+
+	public Color getColor() {
 		return this.color;
 	}
+
 	public Weapon getHoldedWeapon() {
 		return holdedWeapon;
 	}
@@ -190,29 +192,32 @@ public class Player {
 	public void render(GraphicsContext gc) {
 		// TODO Auto-generated method stub
 
+		
+		double aspectRatio = PlayerImage.get(0).getWidth() * height;
+		double targetWidth = aspectRatio / PlayerImage.get(0).getHeight();
+
+		switch (direction) {
+		case Direction.UP ->
+			gc.drawImage(PlayerImage.get(1), getxPosition() - targetWidth / 2, getyPosition(), targetWidth, height);
+		case Direction.DOWN ->
+			gc.drawImage(PlayerImage.get(0), getxPosition() - targetWidth / 2, getyPosition(), targetWidth, height);
+		case Direction.RIGHT ->
+			gc.drawImage(PlayerImage.get(3), getxPosition() - targetWidth / 2, getyPosition(), targetWidth, height);
+		case Direction.LEFT ->
+			gc.drawImage(PlayerImage.get(2), getxPosition() - targetWidth / 2, getyPosition(), targetWidth, height);
+		}
 		double triangleWidth = 14;
 		double triangleHeight = 10;
-		double centerX = xPosition+22.5;
-		double centerY = yPosition-20; // position above the head
+		double centerX = xPosition + targetWidth/2;
+		double centerY = yPosition - 20; // position above the head
 
 		// Coordinates for an upside-down triangle
 		double[] xPoints = { centerX - triangleWidth / 2, centerX + triangleWidth / 2, centerX };
 		double[] yPoints = { centerY, centerY, centerY + triangleHeight };
-		if(name == "Player 1")gc.setFill(Color.RED);
-		else gc.setFill(Color.BLUE);
-		
+		gc.setFill(color);
+
 		gc.fillPolygon(xPoints, yPoints, 3);
-		
-		double aspectRatio = PlayerImage.get(0).getWidth() * height;
-		double targetWidth = aspectRatio / PlayerImage.get(0).getHeight();
-		
-		switch (direction) {
-			case Direction.UP -> gc.drawImage(PlayerImage.get(1), getxPosition()+5, getyPosition(), targetWidth, height);
-			case Direction.DOWN -> gc.drawImage(PlayerImage.get(0), getxPosition()+5, getyPosition(), targetWidth, height);
-			case Direction.RIGHT -> gc.drawImage(PlayerImage.get(3), getxPosition()+5, getyPosition(), targetWidth, height);
-			case Direction.LEFT -> gc.drawImage(PlayerImage.get(2), getxPosition()+5, getyPosition(), targetWidth, height);
-		}
-		
+
 
 	}
 

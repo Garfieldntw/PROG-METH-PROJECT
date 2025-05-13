@@ -1,5 +1,6 @@
 package logic.Component;
 
+import Util.ButtonTemplate;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,7 +26,7 @@ public class GameOverPane extends VBox {
 		winnerImageView.setPreserveRatio(true);
 		
 		
-		Button exitButton = StyledButton("Exit Game");
+		Button exitButton = new ButtonTemplate(new Text("Exit Game"));
 		exitButton.setOnMouseClicked(e -> System.exit(0));
 
 		setAlignment(Pos.CENTER);
@@ -34,33 +35,9 @@ public class GameOverPane extends VBox {
 		getChildren().addAll(winText, winnerImageView, exitButton);
 		this.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		this.setHeight(630);
+		this.prefWidthProperty().bind(GameController.getScene().widthProperty());
+		this.prefHeightProperty().bind(GameController.getScene().heightProperty());
 	}
 	
 	
-	//private Button StyledButton(String text) {
-		//Button button = new Button(text);
-		//button.setFont(Font.font("Monospaced", FontWeight.EXTRA_BOLD, 24));
-		//button.setTextFill(Color.web("#fcecd1"));
-		//BackgroundFill backgroundFill = new BackgroundFill(Color.web("#d8725e"), new CornerRadii(10), Insets.EMPTY);
-		//button.setBackground(new Background(backgroundFill));
-		//BorderStroke borderStroke = new BorderStroke(Color.web("#fcecd1"), BorderStrokeStyle.SOLID, new CornerRadii(10),
-		//		new BorderWidths(2));
-		//button.setBorder(new Border(borderStroke));
-		//button.setPadding(new Insets(10, 20, 10, 20));
-		//button.setPrefWidth(250);
-		//return button;
-	//}
-	private Button StyledButton(String text) {
-		Button button = new Button(text);
-		button.setFont(Font.font("Monospaced", FontWeight.EXTRA_BOLD, 24));
-		button.setTextFill(Color.web("#fcecd1"));
-		BackgroundFill backgroundFill = new BackgroundFill(Color.rgb(255, 255, 255, 0), new CornerRadii(10), Insets.EMPTY);
-		button.setBackground(new Background(backgroundFill));
-		BorderStroke borderStroke = new BorderStroke(Color.web("#fcecd1"), BorderStrokeStyle.SOLID, new CornerRadii(10),
-				new BorderWidths(2));
-		button.setBorder(new Border(borderStroke));
-		button.setPadding(new Insets(10, 20, 10, 20));
-		button.setPrefWidth(250);
-		return button;
-	}
 }

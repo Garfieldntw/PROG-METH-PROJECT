@@ -44,8 +44,9 @@ public class PlayerStatusPane extends HBox{
 		playerImageV = new ImageView(p.getPlayerImage().get(0));
 		playerImageV.setFitHeight(90);
 		playerImageV.setPreserveRatio(true);
-		playerHealth = new Text(p.getHealth() + "");
+		;
 		Text playerName = new Text(p.getName());
+		playerName.setFont(Font.font("Monospaced", FontWeight.BOLD, 16));
 		playerVbox.getChildren().addAll(playerImageV,playerName);
 		playerVbox.setAlignment(Pos.CENTER);
 		playerVbox.setSpacing(10);
@@ -63,7 +64,7 @@ public class PlayerStatusPane extends HBox{
 		weaponImageV = new ImageView(p.getHoldedWeapon().getImage());
 		HBox weaponBox = makeMiniHbox(weaponHolding,weaponImageV);
 		
-		speed = new Text(p.getSpeed() + "");
+		speed = new Text((p.getSpeed()-2) + "");
 		HBox speedBox = makeMiniHbox(speed, speedImageV);
 		status.setAlignment(Pos.CENTER);
 		status.getChildren().addAll( healthBox, bombPowerBox, weaponBox,speedBox);
@@ -107,7 +108,7 @@ public class PlayerStatusPane extends HBox{
 	}
 	
 	public void updateSpeed(){
-		Platform.runLater(() -> speed.setText("" + p.getSpeed()));
+		Platform.runLater(() -> speed.setText("" + (p.getSpeed() - 2)));
 	}
 }
 

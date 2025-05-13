@@ -7,9 +7,9 @@ import logic.GameLogic;
 public class ItemObject extends BlockObject implements Breakable{
 
 	private final Image[] ItemObjectImage = {
-			new Image(getClass().getResource("/CucumberImage.png").toExternalForm()),
-			new Image(getClass().getResource("/AvocadoImage.png").toExternalForm()),
-			//new Image(getClass().getResource("").toExternalForm())
+			new Image(getClass().getResource("/CucumberImage.png").toExternalForm(),true),
+			new Image(getClass().getResource("/AvocadoImage.png").toExternalForm(),true),
+			new Image(getClass().getResource("/EggImage.png").toExternalForm(),true)
 	};
 
 	private Boolean isBreak;
@@ -29,7 +29,7 @@ public class ItemObject extends BlockObject implements Breakable{
 		// TODO Auto-generated method stub
 		this.setBreak(true);
 		
-		GameLogic.DropWeapon(this.getxPosition(), this.getyPosition());
+		GameLogic.dropWeapon(this.getxPosition(), this.getyPosition());
 	}
 
 	@Override
