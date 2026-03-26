@@ -30,3 +30,9 @@ The project focuses on applying object-oriented programming (OOP) concepts and b
 - Refactored and organized code to improve readability and maintainability  
 
 ---
+
+## Contributors
+- Nutthawat Keravittaya
+- Sirawit Kaewpeng
+
+---
